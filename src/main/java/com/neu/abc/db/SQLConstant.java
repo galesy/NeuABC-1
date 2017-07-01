@@ -19,7 +19,9 @@ public class SQLConstant {
 			+ "FROM neu_abc_user  WHERE U_NAME = ? AND U_PWD = ?";	
 	
 	
-	public static String UPDATE_USER = "";
+	public static String UPDATE_USER = "UPDATE neu_abc_user "
+			+ "SET U_NICK = ?, U_DOB = ?, U_GEN = ?, U_EMAIL = ?, U_PHOTO_ADD = ? "
+			+ "WHERE U_ID = ?;";
 	public static String DELETE_USER = "";
 	public static String QUERY_ALL_USER = "";
 	public static String QUERY_USER_BY_ID = "";

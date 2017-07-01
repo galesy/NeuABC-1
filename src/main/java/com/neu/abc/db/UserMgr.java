@@ -69,8 +69,7 @@ public class UserMgr {
 			return null;
 		}
 	}
-	
-	
+		
 	public boolean createTeacher(String uname, String pwd, String email) throws DataAccessException {
 		List<String> paramList = new ArrayList<String>();
 		paramList.add(uname);
@@ -85,5 +84,16 @@ public class UserMgr {
 		paramList.add(phone);
 		paramList.add(email);
 		return conMgr.executeUpdateSQL(SQLConstant.CREAT_USER_S, paramList);
+	}
+	
+	public boolean updateUser(User user) throws DataAccessException{
+		List<String> paramList = new ArrayList<String>();
+		paramList.add( user.getNick() );
+		paramList.add( user.getDob() );
+		paramList.add( user.getGen() );
+		paramList.add( user.getEmailAddr() );
+		paramList.add( user.getPhoto() );
+		paramList.add( user.getId() );		
+		return conMgr.executeUpdateSQL(SQLConstant.UPDATE_USER, paramList);
 	}
 }

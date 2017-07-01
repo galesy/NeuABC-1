@@ -51,5 +51,17 @@
 		<put-attribute name="body" value="/WEB-INF/views/neu/body_editableuser.jsp" />
 		<put-attribute name="top" value="/WEB-INF/views/neu/top_landing.jsp?tab=edituser" />
 	</definition>
+	<definition name="abc.stu.redirect" extends="base.homepage">
+		<put-attribute name="body" value="/WEB-INF/views/neu/page_redirect.jsp" />
+		<put-attribute name="top" value="/WEB-INF/views/neu/top_landing.jsp" />
+	</definition>
+	<definition name="abc.stu.prodintro" extends="base.homepage">
+		<put-attribute name="body" value="/WEB-INF/views/neu/body_prodintro.jsp" />
+		<put-attribute name="top" value="/WEB-INF/views/neu/top_landing.jsp?tab=schedule" />
+	</definition>
+	<definition name="abc.stu.bookclass" extends="base.homepage">
+		<put-attribute name="body" value="/WEB-INF/views/neu/body_bookclass.jsp" />
+		<put-attribute name="top" value="/WEB-INF/views/neu/top_landing.jsp?tab=schedule" />
+	</definition>
 
 </tiles-definitions>

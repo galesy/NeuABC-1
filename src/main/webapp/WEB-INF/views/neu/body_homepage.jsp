@@ -18,7 +18,7 @@
 				dataType : 'json',
 				success : function(data) {
 					if (data.status == 'Success') {
-						location.href = "/landing";
+						location.href = "landing";
 					} else {
 						$("#top-error").show();
 					}

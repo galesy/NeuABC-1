@@ -308,5 +308,5 @@
     </div>
 </div>
 <div class="footer pure-u-1">
-	<p class="copyright">Copyright © 2017 NP Technology. All rights reserved. </p>
+	<p class="copyright">Copyright &copy; 2017 NP Technology. All rights reserved. </p>
 </div>

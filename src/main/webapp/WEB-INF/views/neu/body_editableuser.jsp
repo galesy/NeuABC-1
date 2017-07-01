@@ -8,13 +8,39 @@
 	if(user == null){
 		response.sendRedirect("home");
 	}
-	String gen = user.getGen()==null?"U":("M".equalsIgnoreCase(user.getGen())?"男":"女");
-	String iconPath = user.getPhoto()==null?"":(request.getContextPath()+"/static/neu/images/"+user.getPhoto());
+	String gen = user.getGen()==null?"U":(user.getGen().toUpperCase());
+	String iconPath = user.getPhoto()==null?"":(request.getContextPath()+"/static/neu/images/photo/"+user.getPhoto());
 	
 %>
 <script type="text/javascript">
 
 	$(document).ready(function() {
+		$.validator.setDefaults({
+			submitHandler : function() {
+				//return;
+			}
+		});
+		
+// 		$("#profileForm").validate({
+// 				//debug:true,
+// 				rules : {
+// 					email : {
+// 						required:true,
+// 						email : true
+// 					},
+// 				},
+// 				messages : {
+// 					email : {
+// 						email : "您输入的邮箱格式不符合规范"
+// 					}
+// 				},
+// 				errorElement : "em",
+// 				errorPlacement : function(error, element) {
+// 					error.appendTo(element.parent().children().last());
+// 				}
+
+// 			});
+		
 		$( "#dob" ).datepicker( {
 			numberOfMonths:1,//显示几个月  
             showButtonPanel:true,//是否显示按钮面板  
@@ -28,7 +54,7 @@
             showMonthAfterYear:true,//是否把月放在年的后面 
             minDate:'1950-01-01'//最小日期  
             //maxDate:'2011-03-20',//最大日期  
-		})
+		});
 
 	});
 	
@@ -54,6 +80,9 @@
 			yearSuffix: '年'};
 		$.datepicker.setDefaults($.datepicker.regional['zh-CN']);
 	});
+
+	
+
 </script>
 <div class="person_main_content_wrapper pure-u-1">
 	<div class="person_box pure-u-1">
@@ -70,7 +99,8 @@
                     </div>
                     <div class="pure-control-group">
                         <label for="email">Email</label>
-                        <input id="email" type="email" placeholder="Email" value="<%= user.getEmailAddr()==null?"": user.getEmailAddr()%>">
+                        <input id="email" name="email" type="email" placeholder="Email" value="<%= user.getEmailAddr()==null?"": user.getEmailAddr()%>" required>
+                        
                     </div>
                     <div class="pure-control-group">
                         <label >性别</label>

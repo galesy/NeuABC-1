@@ -8,7 +8,8 @@
 	if(user == null){
 		response.sendRedirect("home");
 	}
-	String gen = user.getGen()==null?"U":user.getGen();
+	String gen = user.getGen()==null?"保密":("M".equalsIgnoreCase(user.getGen())?"男":"女");
+	String iconPath = user.getPhoto()==null?"":(request.getContextPath()+"/static/neu/images/photo/"+user.getPhoto());
 	
 %>
 <div class="person_main_content_wrapper pure-u-1">
@@ -40,7 +41,7 @@
                     <div class="pure-control-group">
                         <label for="Url">头像：</label>
                         <label for="cb" class="pure-checkbox head_img_box">
-                            <span class="head_img pure-img"><img src="<%=request.getContextPath() %>/static/neu/images/images/<%=user.getPhoto()==null?"girl-1252997_960_720.jpg":user.getPhoto() %> class=""/></span>
+                            <span class="head_img pure-img"><img src="<%=iconPath %>" class=""/></span>
                         </label>
                     </div>
                     <div class="pure-controls">
