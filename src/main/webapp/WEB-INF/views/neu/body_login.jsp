@@ -19,8 +19,10 @@
 							$.cookie("rmbUser", "true", { expires: 30 });
 							$.cookie("username", $("#username").val(), { expires: 30 }); 
 							$.cookie("password", $("#password").val(), { expires: 30 }); 
-						}						
-						location.href = "/abc/landing";
+						}else{
+							$.cookie("rmbUser", "false", { expires: 30 });
+						}				
+						location.href = "/landing";
 					} else {
 						$("#top-error").show();
 					}

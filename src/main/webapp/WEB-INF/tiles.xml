@@ -21,14 +21,19 @@
 		<put-attribute name="body" value="" />
 		<put-attribute name="foot" value="/WEB-INF/views/templates/footer.jsp" />
 	</definition>
+	<definition name="homepage" template="/WEB-INF/views/home.jsp">		
+		<put-attribute name="title" value="NEU ABC" />
+	</definition>
 
 	<definition name="abc.calendar" extends="base.definition">
 		<put-attribute name="body" value="/WEB-INF/views/templates/body.jsp" />
 	</definition>
-	<definition name="abc.homepage" extends="base.homepage">
+	<definition name="abc.homepage" extends="homepage">
+	</definition>
+	<definition name="abc.stu.homepage" extends="base.homepage">
 		<put-attribute name="body" value="/WEB-INF/views/neu/body_homepage.jsp" />
 		<put-attribute name="top" value="/WEB-INF/views/neu/top_homepage.jsp" />
-	</definition>
+	</definition>	
 	<definition name="abc.register_t" extends="base.definition">
 		<put-attribute name="body" value="/WEB-INF/views/register_t.jsp" />
 	</definition>
@@ -63,5 +68,33 @@
 		<put-attribute name="body" value="/WEB-INF/views/neu/body_bookclass.jsp" />
 		<put-attribute name="top" value="/WEB-INF/views/neu/top_landing.jsp?tab=schedule" />
 	</definition>
-
+	<!-- For teacher -->
+	<definition name="abc.tch.homepage" extends="base.homepage">
+		<put-attribute name="body" value="/WEB-INF/views/tch/tch_homepage.jsp" />
+		<put-attribute name="top" value="/WEB-INF/views/tch/top_tch_homepage.jsp" />
+	</definition>
+	<definition name="abc.tch.signin" extends="base.homepage">
+		<put-attribute name="body" value="/WEB-INF/views/tch/tch_signin.jsp" />
+		<put-attribute name="top" value="/WEB-INF/views/tch/top_signin.jsp" />
+	</definition>
+	<definition name="abc.tch.signup" extends="base.homepage">
+		<put-attribute name="body" value="/WEB-INF/views/tch/tch_signup.jsp" />
+		<put-attribute name="top" value="/WEB-INF/views/tch/top_signin.jsp" />
+	</definition>
+	<definition name="abc.tch.landing" extends="base.homepage">
+		<put-attribute name="body" value="/WEB-INF/views/tch/tch_calendar.jsp" />
+		<put-attribute name="top" value="/WEB-INF/views/tch/top_landing.jsp" />
+	</definition>
+	<definition name="abc.tch.calendar1" extends="base.homepage">
+		<put-attribute name="body" value="/WEB-INF/views/tch/tch_calendar1.jsp" />
+		<put-attribute name="top" value="/WEB-INF/views/tch/top_landing.jsp" />
+	</definition>
+	<definition name="abc.tch.useredit" extends="base.homepage">
+		<put-attribute name="body" value="/WEB-INF/views/tch/tch_useredit.jsp" />
+		<put-attribute name="top" value="/WEB-INF/views/tch/top_landing.jsp?tab=edituser" />
+	</definition>
+	<definition name="abc.tch.editableuser" extends="base.homepage">
+		<put-attribute name="body" value="/WEB-INF/views/tch/tch_editableuser.jsp" />
+		<put-attribute name="top" value="/WEB-INF/views/tch/top_landing.jsp?tab=edituser" />
+	</definition>
 </tiles-definitions>

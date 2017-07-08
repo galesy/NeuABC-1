@@ -56,7 +56,9 @@
 						type : "post",
 						dataType : "json",
 						data : {
-							username : $("#phone").val(),
+							username : function() {
+					            return $("#phone").val();
+					        }
 						}
 					}
 				},

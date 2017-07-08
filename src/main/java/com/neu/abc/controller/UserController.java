@@ -41,11 +41,11 @@ public class UserController {
 	/**
 	 * For teacher.
 	 */
-	@RequestMapping(value = "/doRegist", method = RequestMethod.POST)
+	@RequestMapping(value = "/doRegistt", method = RequestMethod.POST)
 	public String doTeacher(HttpServletRequest request, HttpServletResponse response) throws DataAccessException {  
 		String uname=request.getParameter("username");
 		String pwd = request.getParameter("password");
-		String email = request.getParameter("email");
+		String email = "";
 		String agree = request.getParameter("agree");
 		String status = "failed";
 		String message = "Failed to create user.";
@@ -104,7 +104,7 @@ public class UserController {
 	}
 	@RequestMapping(value = "/check", method = RequestMethod.POST)
 	public String checkUniqueName(HttpServletRequest request, HttpServletResponse response) throws DataAccessException { 
-		String uname=request.getParameter("phone");
+		String uname=request.getParameter("username");
 		String status = "true";
 		User user = usermgr.queryUser(uname);
 		if(user !=null){
@@ -122,13 +122,16 @@ public class UserController {
         mav.setViewName("abc.register_s");
 		return mav;
 	}
-	
+	/**
+	 * Teacher Pre login.
+	 */
 	@RequestMapping(value = "/regist", method = RequestMethod.GET)
 	public ModelAndView registerTeacher(Locale locale, Model model) throws DataAccessException {
 		ModelAndView mav = new ModelAndView();
         mav.setViewName("abc.register_t");
 		return mav;
 	}
+	
 	
 
 }

@@ -1,103 +1,60 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page session="false"%>
-<!DOCTYPE html>
-<html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta charset='GBK' />
-<link href='<%=request.getContextPath() %>/static/external/css/fullcalendar.min.css' rel='stylesheet' />
-<link href='<%=request.getContextPath() %>/static/external/css/fullcalendar.print.min.css' rel='stylesheet' media='print' />
-<script src='<%=request.getContextPath() %>/static/external/js/moment.min.js'></script>
-<script src='<%=request.getContextPath() %>/static/external/js/jquery.js'></script>
-<script src='<%=request.getContextPath() %>/static/external/js/fullcalendar.min.js'></script>
-<script>
-
-	$(document).ready(function() {
-	
-		$('#calendar').fullCalendar({
-			header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'month,agendaWeek,agendaDay,listWeek'
-			},
-			Duration:"01:00:00",
-			contentHeight:300,
-			slotWidth:30,
-			allDaySlot:false,
-			defaultDate: '2017-05-12',
-			defaultView:'agendaWeek',
-			selectable: true,
-			selectHelper: false,
-			selectOverlap:false,
-			select: function(start, end) {
-				if(true){//confirm("Book for this time: "+start.format()+"?")){
-					var eventData = {
-							title: "Booked",
-							start: start,
-							end: end
-						};
-					$('#calendar').fullCalendar('renderEvent', eventData, true); 
-				}
-				$('#calendar').fullCalendar('unselect');
-			},
-			editable: true,
-			eventLimit: true, 
-			loading: function(bool) {
-				$('#loading').toggle(bool);
-			},
-			dayClick: function(date, allDay, jsEvent, view) {
-					console.log(date);
-			},
-			eventClick: function(event, jsEvent, view) {
-				$('#calendar').fullCalendar('removeEvents', event._id);
-			},
-			dayRender:function( date, cell ) { 
-				$(cell).css('width','50px');
-			},
-			eventRender:function(event, element, view) {
-                //$(element).css('width','50px');
-            }
-		});
-		
-	});
-
-</script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0 maximum-scale=1.0, user-scalable=1;" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<title><tiles:insertAttribute name="title" ignore="true" /></title>
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/static/neu/css/css.css">
+<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/base-min.css">
+<!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/base-min.css">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-min.css">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-old-ie-min.css">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/base-min.css">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-min.css">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css">
+<!--<![endif]-->
 <style>
-
-	body {
-		margin: 0;
-		padding: 0;
-		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-		font-size: 14px;
-	}
-
-	#script-warning {
-		display: none;
-		background: #eee;
-		border-bottom: 1px solid #ddd;
-		padding: 0 10px;
-		line-height: 40px;
-		text-align: center;
-		font-weight: bold;
-		font-size: 12px;
-		color: red;
-	}
-
-	#loading {
-		display: none;
-		position: absolute;
-		top: 10px;
-		right: 10px;
-	}
-
-	#calendar {
-		max-width: 900px;
-		margin: 40px auto;
-		padding: 0 10px;
-	}
-
-</style>
+    /*
+    When setting the primary font stack, apply it to the Pure grid units along
+    with `html`, `button`, `input`, `select`, and `textarea`. Pure Grids use
+    specific font stacks to ensure the greatest OS/browser compatibility.
+    */
+    body, html, button, input, select, textarea,
+    .pure-g [class *= "pure-u"] {
+        /* Set your content font stack here: */
+        font-family: "robotolight";
+    }	
+</style> 
 </head>
 <body>
-	<div id='calendar' style="width:600px"></div>
+<div class="home_top_nav_wrapper home_all pure-u-1">
+	<a class="home_top_nav_logo" href="<%=request.getContextPath() %>"></a>    
+</div>
+<div class="home_main_content_wrapper pure-u-1">
+	<div class="home_main_content_banner_title pure-u-1">
+        <span class="bird_s"></span>
+        <span class="bird"></span>
+    	<span class="text pure-u-1">NeuABC</span>
+        <span class="cloud"></span>
+    </div>
+    <div class="home_main_content_banner_selbox pure-u-1">
+    	<div class="home_main_content_banner_sel home_main_content_banner_sel_all pure-u-3-4 pure-u-xl-1-2">
+            <a href="stu" class="home_main_content_banner_s pure-button pure-u-sm-2-5 pure-u-4-5"><i class="student"></i>我是学生</a>
+            <a href="tch" class="home_main_content_banner_t pure-button pure-u-sm-2-5 pure-u-4-5"><i class="teacher"></i>I'm a teacher</a>
+        </div>
+    </div>
+</div>
+<div class="footer pure-u-1">
+	<p class="copyright">Copyright © 2017 JSU Technology. All rights reserved. </p>
+</div>
 </body>
 </html>

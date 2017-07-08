@@ -55,6 +55,31 @@ public class DBMgr {
 		}
 		return resultList;
 	}
+	
+	public List<String> queryForOneCol(String sql, List<String> params)throws DataAccessException{
+		Connection con = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		List<String> resultList = new ArrayList<String>();
+		try {
+			con = ds.getConnection();
+			pst = con.prepareStatement(sql);
+
+			for (int i =0; i < params.size(); i++) {
+				pst.setString(i+1, params.get(i));
+			}
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				resultList.add(rs.getString(1));
+			}
+		} catch (SQLException ex) {
+			logger.error("SQL Error:" + sql, ex);
+			throw new DataAccessException(ex);
+		} finally {
+			close(con, pst, rs);
+		}
+		return resultList;
+	}
 
 	public List<List<String>> executeQuerySQL(String sql, List<String> params, int colNum)
 	throws DataAccessException{
@@ -75,6 +100,7 @@ public class DBMgr {
 				for (int i = 1; i <= colNum; i++) {
 					data.add(rs.getString(i));
 				}
+				resultList.add(data);
 			}
 		} catch (SQLException ex) {
 			logger.error("SQL Error:" + sql, ex);

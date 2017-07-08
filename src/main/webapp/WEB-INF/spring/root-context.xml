@@ -7,6 +7,9 @@
 	<bean id="usermgr" class="com.neu.abc.db.UserMgr">
 		<property name="conMgr" ref="dbm" />
 	</bean>
+	<bean id="classmgr" class="com.neu.abc.db.ClassMgr">
+		<property name="conMgr" ref="dbm" />
+	</bean>
 	<bean id="dbm" class="com.neu.abc.db.DBMgr">
 		<property name="ds" ref="dataSource" />
 	</bean>
@@ -72,6 +75,9 @@
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize">
 			<value>104857600</value>
+		</property>
+		<property name="defaultEncoding">
+			<value>UTF-8</value>
 		</property>
 		<property name="maxInMemorySize">
 			<value>4096</value>

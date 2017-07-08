@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.util.WebUtils;
 
 import com.neu.abc.db.UserMgr;
 import com.neu.abc.exceptions.DataAccessException;
@@ -38,25 +40,54 @@ public class ABCAppController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String app(HttpServletRequest request, HttpServletResponse response) {
-		// if("en".equals(request.getParameter("lan"))){
-		// resolver.setLocale(request, response, Locale.ENGLISH );
-		// }else{
-		// resolver.setLocale(request, response, Locale.CHINA );
-		// }
-		return "abc.homepage";
+	public ModelAndView app(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav = new ModelAndView();
+        mav.setViewName("abc.homepage");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public ModelAndView appHomepage(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav = new ModelAndView();
+        mav.setViewName("abc.homepage");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/stu", method = RequestMethod.GET)
+	public String studentHomepage(HttpServletRequest request, HttpServletResponse response) {
+		return "abc.stu.homepage";
+	}
+	@RequestMapping(value = "/tch", method = RequestMethod.GET)
+	public String teacherHomepage(HttpServletRequest request, HttpServletResponse response) {
+		return "abc.tch.homepage";
 	}
 
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String home(HttpServletRequest request, HttpServletResponse response) {
-		return "abc.homepage";
-	}
 
 	@RequestMapping(value = "/landing", method = RequestMethod.GET)
 	public String displayLandingPage(HttpServletRequest request, HttpServletResponse response) {
-		return "abc.stu.landing";
+		User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
+		if("T".equalsIgnoreCase(user.getRole())){
+			if(user.getProdTypes().size()>0){
+				return "abc.tch.landing";
+			}else{
+				return "abc.tch.calendar1";
+			}
+			
+		}else{
+			return "abc.stu.landing";
+		}
 	}
 
+	@RequestMapping(value = "/prodintro", method = RequestMethod.GET)
+	public String prodintro(HttpServletRequest request, HttpServletResponse response) {
+		User user = (User)WebUtils.getSessionAttribute(request, Constants.SESSION_USER);
+		//User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
+		if("T".equalsIgnoreCase(user.getRole())){
+			return "abc.tch.calendar1";			
+		}else{
+			return "abc.stu.prodintro";
+		}
+	}
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
 		request.getSession(true).removeAttribute(Constants.SESSION_USER);
@@ -68,12 +99,22 @@ public class ABCAppController {
 	 */
 	@RequestMapping(value = "/edituser", method = RequestMethod.GET)
 	public String preloadUserEdit(HttpServletRequest request, HttpServletResponse response) {
-		return "abc.stu.useredit";
+		User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
+		if("T".equalsIgnoreCase(user.getRole())){
+			return "abc.tch.useredit";
+		}else{
+			return "abc.stu.useredit";
+		}
 	}
 
 	@RequestMapping(value = "/editableuser", method = RequestMethod.GET)
 	public String loadUserEdit(HttpServletRequest request, HttpServletResponse response) {
-		return "abc.stu.editableuser";
+		User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
+		if("T".equalsIgnoreCase(user.getRole())){
+			return "abc.tch.editableuser";
+		}else{
+			return "abc.stu.editableuser";
+		}
 	}
 
 	@RequestMapping(value = "/profileupload", method = RequestMethod.POST)
@@ -85,7 +126,7 @@ public class ABCAppController {
 			String email = request.getParameter("email");
 			String photo = user.getPhoto();
 			String gen = request.getParameter("gen");
-			logger.info(gen+"||"+photo);
+			logger.info(request.getCharacterEncoding());
 			String photoPath = request.getSession().getServletContext().getRealPath("/")
 					+ "static\\neu\\images\\photo\\";
 			CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
@@ -119,11 +160,6 @@ public class ABCAppController {
 		return "abc.stu.redirect";
 	}
 
-	@RequestMapping(value = "/prodintro", method = RequestMethod.GET)
-	public String productIntroduction(HttpServletRequest request, HttpServletResponse response) {
-		return "abc.stu.prodintro";
-	}
-	
 	@RequestMapping(value = "/bookclass", method = RequestMethod.GET)
 	public String bookClass(HttpServletRequest request, HttpServletResponse response) {
 		return "abc.stu.bookclass";

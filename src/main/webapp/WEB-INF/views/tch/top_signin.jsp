@@ -9,18 +9,12 @@
     body, html, button, input, select, textarea,
     .pure-g [class *= "pure-u"] {
         /* Set your content font stack here: */
-        font-family: "robotolight","微软雅黑";
-    }	
+        font-family: "robotolight";
+    }		
 </style> 
-<div class="home_top_nav_wrapper pure-u-1">
+<div class="signin_top_nav_wrapper pure-u-1">
 	<div class="top">
 	<span class="home_t_nav_logo pure-u-1-4"><a href="/" class="home_t_nav_logo_img"></a></span>
-    <a href="<%=request.getContextPath() %>/login" class="home_nav_button">登录</a>
+    <span class="signin_top_nav_tel">Hot Line：86-411-84835864</span>  
     </div>
-	<ul class="home_t_nav_bar pure-u-1-2" style="margin-top: -27px;">
-    	<li class="pure-menu-item"><a href="<%=request.getContextPath() %>" class="pure-menu-link sel">首页</a></li>
-    	<li class="pure-menu-item"><a href="#" class="pure-menu-link">课程体系</a></li>
-    	<li class="pure-menu-item"><a href="#" class="pure-menu-link">北美师资</a></li>
-    	<li class="pure-menu-item"><a href="#" class="pure-menu-link">公开课</a></li>
-    </ul>    
 </div>

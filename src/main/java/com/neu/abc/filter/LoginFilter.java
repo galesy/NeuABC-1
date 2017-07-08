@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
+import com.neu.abc.model.User;
 import com.neu.abc.utils.Constants;
 
 public class LoginFilter implements Filter {
@@ -26,6 +27,16 @@ public class LoginFilter implements Filter {
 		this.config = null;
 		logger.info("end login filter!");
 	}
+	
+	private String[] notFilter = new String[]{
+			//static files
+			"/images", "/js", "/css","/fonts",
+			//static pages
+			"/home",
+			//students
+			"/sso",  "/user","/login","/doLogin","/stu",
+			//teachers
+			"/tch", "/sign","doSign" };
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
@@ -35,8 +46,6 @@ public class LoginFilter implements Filter {
 		}
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
-		String[] notFilter = new String[] { "/images", "/js", "/css","/fonts",
-				"/home", "/sso", "/user","/login","/doLogin" };
 
 		String uri = httpRequest.getRequestURI();
 		boolean doFilter = true;
@@ -66,6 +75,11 @@ public class LoginFilter implements Filter {
 				httpResponse.sendRedirect("home");
 				return;
 			} else {
+				User user = (User)obj;
+				if(httpRequest.getParameter("uuu")!=null && !user.getId().equals(httpRequest.getParameter("uuu"))){
+					httpResponse.sendRedirect("invalidsession");
+					return;
+				}
 				filterChain.doFilter(request, response);
 			}
 		} else {

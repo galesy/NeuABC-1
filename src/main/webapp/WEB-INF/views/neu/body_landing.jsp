@@ -2,6 +2,213 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<script>
+var tempEvent=null;
+	$(document).ready(function() {
+		$("#scheduleDialog").dialog({
+			height: 250,
+		      width: 350,
+		      modal: true,
+		      buttons: {
+		        "确定": function(){
+		        	if(tempEvent !=null){
+						$('#calendar').fullCalendar('removeEvents', tempEvent._id);
+						var eventData = {
+								title: "已预约",
+								start: tempEvent._start,
+								end: tempEvent._end
+							};
+						$('#calendar').fullCalendar('renderEvent', eventData, true); 
+						$("#scheduleDialog").dialog( "close" );
+					} 
+		        },
+		        "取消": function() {
+		          $("#scheduleDialog").dialog( "close" );
+		        }
+		      },
+		      close: function() {
+		    	  if(tempEvent !=null){
+						$('#calendar').fullCalendar('removeEvents', tempEvent._id);
+						tempEvent ==null;
+					}      
+		      },
+		      autoOpen: false,
+		      show: {
+		        effect: "blind",
+		        duration: 200
+		      },
+		      hide: {
+		        effect: "blind",
+		        duration: 200
+		      }});
+		
+		
+		$('#calendar').fullCalendar({
+			header: {title: "我的课表",
+				left: null
+				//,right: 'agendaWeek'
+			},
+			events:[{"color":"#ff9f89","start":"2017-04-03 18:23:13","end":"2017-07-02 07:00:00","id":"NA_a0"},{"color":"#ff9f89","start":"2017-07-04 12:00:00","end":"2017-07-05 08:00:00","id":"NA_a3"},{"color":"#ff9f89","start":"2017-07-05 12:00:00","end":"2017-07-07 09:00:00","id":"NA_a5"},{"color":"#ff9f89","start":"2017-07-11 12:00:00","end":"2018-02-03 18:23:13","id":"NA_a"}
+			],
+			eventRender: function(event, element) {
+				if(event._id.indexOf("NA_")==0){
+					element.text("");
+					element.css("opacity",0.3);
+				}else if(event._id =="temp"){
+					tempEvent=event;
+					element.text("设定中");
+					element.css("opacity",0.3);
+				}
+				if(typeof event.txt !="undefined"){
+					element.text(event.txt);
+				}
+		    },
+			//locale:"zh-CN",
+			//theme: true,
+			slotLabelFormat:"HH:mm",
+			contentHeight:500,
+			slotWidth:50,
+			allDaySlot:false,
+			defaultView:'agendaWeek',
+			//selectable: true,
+			selectHelper: false,
+			selectOverlap:false,		
+			slotEventOverlap:false,
+			ignoreTimezone:false,
+			select: function(start, end) {
+				if(true){//confirm("Book for this time: "+start.format()+"?")){
+					var eventData = {
+							title: "已预约",
+							start: start,
+							end: end
+						};
+					$('#calendar').fullCalendar('renderEvent', eventData, true); 
+				}
+				$('#calendar').fullCalendar('unselect');
+			},
+			dayClick: function(date, allDay, jsEvent, view) {
+				var stt = $.fullCalendar.formatDate(date, "YYYY-MM-DD HH:mm:ss");
+				var ymdh = stt.substring(0,14);
+				if(date._i[4]==30){
+					ymdh+="59:59";
+				}else{
+					ymdh+="29:59";
+				}
+				var eventData = {
+						id:"temp",
+						start: stt,
+						end: ymdh
+					};
+				if(tempEvent !=null){
+					$('#calendar').fullCalendar('removeEvents', tempEvent._id);
+				}
+				$('#calendar').fullCalendar('renderEvent', eventData, true); 
+				$.ajax({
+					type : 'POST',
+					//contentType : 'application/json',  
+					url : 'cls/preSelectEvent',
+					data : {
+						startTime : stt
+					},
+					dataType : 'json',
+					success : function(data) {
+						console.log(JSON.stringfy(data));
+						if (data.status == 'success') {
+							
+						} 
+						$( "#scheduleDialog" ).dialog( "open" );
+					},
+					error : function(data) {
+						$( "#scheduleDialog" ).dialog( "open" );
+						console.log(JSON.stringfy(data));
+					}
+				});
+			},
+			editable: false,
+			eventLimit: true, 
+			//monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+           // monthNamesShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            dayNames: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
+            dayNamesShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
+            today: ["本周"],
+            firstDay: 1,
+            buttonText: {
+                today: '本周',
+                month: '月',
+                week: '周',
+                day: '日',
+                prev: '上一周',
+                next: '下一周'
+            },
+			loading: function(bool) {
+				$('#loading').toggle(bool);
+			},
+			eventClick: function(event, jsEvent, view) {
+				if(event._id.indexOf("NA_")!=0){
+					$('#calendar').fullCalendar('removeEvents', event._id);
+				}
+			},
+			dayRender:function( date, cell ) { 
+				$(cell).css('width','80px');
+			}
+		});
+		
+	});
+
+</script>
+<style>
+
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		font-size: 14px;
+	}
+
+	#script-warning {
+		display: none;
+		background: #eee;
+		border-bottom: 1px solid #ddd;
+		padding: 0 10px;
+		line-height: 40px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 12px;
+		color: red;
+	}
+
+	#loading {
+		display: none;
+		position: absolute;
+		top: 10px;
+		right: 10px;
+	}
+
+	#calendar {
+		max-width: 900px;
+		margin: 40px auto;
+		padding: 0 10px;
+	}
+	
+	.fc-widget-header{
+		height:40px;
+		background-color:#003399;
+		color:#FFF;
+		font-size:16px;
+	}
+.fc-event-container{
+	margin:0 !important;
+}
+.fc-event{
+	background-color:#f89600;
+	color:#FFF !important;
+	border: 0;
+	border-radius:0;
+	font-size:16px;
+}
+
+</style>
+
 <div class="calendar_main_content_wrapper pure-u-1">
     <div class="box_bg" >
     	<div class="s_calendar_box calendar_date">
@@ -14,299 +221,37 @@
     </div>
     <div class="box_bg" >
     	<div class="s_calendar_box">
-        	<div class="title">我的课表</div>
-            <div class="date_box schedule_table_box">
-            	<div class="date_title">
-                	<span class="title">日期/时间</span>
-                    <select name="年" class="date_day">
-                        <option value ="2019年">2019年</option>
-                        <option value ="2018年">2018年</option>
-                        <option value ="2017年">2017年</option>
-                    </select>
-                    <select name="月"  class="date_day">
-                        <option value ="1">1月</option>
-                        <option value ="2">2月</option>
-                        <option value ="3">3月</option>
-                        <option value ="4">4月</option>
-                        <option value ="5">5月</option>
-                        <option value ="6">6月</option>
-                        <option value ="7">7月</option>
-                        <option value ="8">8月</option>
-                        <option value ="9">9月</option>
-                        <option value ="10">10月</option>
-                        <option value ="11">11月</option>
-                        <option value ="12">12月</option>
-                    </select>
-                    <a href="#" class="next_week">下一周</a>
-                </div>
-                <div class="schedule_table">
-                    <div class="left_time">
-                        <span>00:00</span>
-                        <span>01:00</span>
-                        <span>02:00</span>
-                        <span>03:00</span>
-                        <span>04:00</span>
-                        <span>05:00</span>
-                        <span>06:00</span>
-                        <span>07:00</span>
-                        <span>08:00</span>
-                        <span>09:00</span>
-                        <span>10:00</span>
-                        <span>11:00</span>
-                        <span>12:00</span>
-                    </div>
-                    <div class="right_box">
-                        <ul class="schedule_date_week">
-                            <li>
-                                <p>今天</p>
-                                <p>6月21日</p>
-                            </li>
-                            <li>
-                                <p>周四</p>
-                                <p>6月22日</p>
-                            </li>
-                            <li>
-                                <p>周五</p>
-                                <p>6月23日</p>
-                            </li>
-                            <li>
-                                <p>周六</p>
-                                <p>6月24日</p>
-                            </li>
-                            <li>
-                                <p>周日</p>
-                                <p>6月25日</p>
-                            </li>
-                            <li>
-                                <p>周一</p>
-                                <p>6月26日</p>
-                            </li>
-                            <li>
-                                <p>周二</p>
-                                <p>6月27日</p>
-                            </li>
-                        </ul>
-                        <div class="con">
-                            <div class="con_list">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <div class="con_list">
-                                <span></span>
-                                <span></span>
-                                <span class="sel recent_sel">
-                                    <span class="recent_icon"></span>已预约
-                                    <div class="class_details">
-                                        <div class="title">课堂详情</div>
-                                        <div class="line"></div>
-                                        <div class="con">
-                                            <p>时间：2017-06-21  02:30-03:00</p>
-                                            <p>教师：Ally</p>
-                                            <p>课程：L1级别定制套餐</p>
-                                            <p>课题：L1.Hans Christian Andersen 课程 </p>
-                                        </div>
-                                        <a href="#" class="btn_class">请准时进入课堂</a>
-                                    </div>
-                                    </span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <div class="con_list">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span class="sel">
-                                    <span class="icon"></span>已预约
-                                    <div class="class_details">
-                                        <div class="title">课堂详情</div>
-                                        <div class="line"></div>
-                                        <div class="con">
-                                            <p>时间：2017-06-21  02:30-03:00</p>
-                                            <p>教师：Ally</p>
-                                            <p>课程：L1级别定制套餐</p>
-                                            <p>课题：L1.Hans Christian Andersen 课程 </p>
-                                        </div>
-                                        <a href="#" class="btn">等待上课</a>
-                                        <a href="#" class="btn_cancel">取消上课</a>
-                                    </div>
-                                </span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <div class="con_list">
-                                <span></span>
-                                <span></span>
-                                <span class="sel"><span class="icon"></span>已预约</span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <div class="con_list">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span class="sel"><span class="icon"></span>已预约</span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <div class="con_list">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <div class="con_list con_list_last">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span class="sel"><span class="icon"></span>已预约</span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-    					</div>
-                    </div>
-                    <div class="btn_box">
-                        <a href="#" class="btn btn_sel">上午</a>
-                        <a href="#" class="btn">下午</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+			<div id='calendar'> </div>
+		</div>
+	</div>
 </div>
+
+<div id="scheduleDialog" title="请选择课程内容">
+<p class="validateTips"><label >上课时间</label><span id="timetext"></span></p>
+  <form>
+    <fieldset>
+      <label for="name">选择教师</label>
+      <select name="teacher" class="text ui-widget-content ui-corner-all">
+      	<option value="300001">Ally Lee</option>
+      	<option value="300002">Thomas Green</option>
+      	<option value="300003">Kevin Moreland</option>
+      </select>
+      <label for="grade">选择课程</label>
+      <select name="teacher" class="text ui-widget-content ui-corner-all">
+      	<option value="L1">L1级别套餐</option>
+      	<option value="L2">L2级别套餐</option>
+      	<option value="L3">L3级别套餐</option>
+      </select>
+      <label for="password" >选择课题</label>
+      <select name="teacher" class="text ui-widget-content ui-corner-all">
+      	<option value="L1_A">L1 Practice ABC 课程</option>
+      	<option value="L1_C">L1 Know your name 课程</option>
+      	<option value="L1_C">L1 Lovely Animal 课程</option>
+      </select>
+    </fieldset>
+  </form>
+</div>
+
 <div class="footer pure-u-1">
 	<p class="copyright">Copyright &copy; 2017 NP Technology. All rights reserved. </p>
 </div>

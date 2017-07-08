@@ -1,5 +1,8 @@
 package com.neu.abc.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 	private String id;
 	private String name;
@@ -14,7 +17,18 @@ public class User {
 	private String phoneNumber;
 	private String photo;
 	private String createTime;
+	private List<String> prodTypes;
+	
+	public User(){
+		this.prodTypes = new ArrayList<String>();
+	}
 
+	public List<String> getProdTypes() {
+		return prodTypes;
+	}
+	public void setProdTypes(List<String> prodTypes) {
+		this.prodTypes = prodTypes;
+	}
 	public String getNick() {
 		return nick;
 	}

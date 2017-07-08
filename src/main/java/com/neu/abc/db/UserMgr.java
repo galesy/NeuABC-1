@@ -96,4 +96,6 @@ public class UserMgr {
 		paramList.add( user.getId() );		
 		return conMgr.executeUpdateSQL(SQLConstant.UPDATE_USER, paramList);
 	}
+	
+	
 }
