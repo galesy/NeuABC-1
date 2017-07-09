@@ -87,7 +87,7 @@
         <div class="signin_main_content">
             <div class="sign_link">
                 <span>没有账户？ </span>
-                <a href="signup-s.html">注册</a>
+                <a href="stu">注册</a>
             </div>
             <form name="loginForm" id="loginForm" class="pure-form pure-form-aligned">
                 <div class="pure-control-group">

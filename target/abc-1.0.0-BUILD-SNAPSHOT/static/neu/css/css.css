@@ -22,10 +22,11 @@ a,a:hover,a:link,a:visited,a:active{text-decoration:none;}
 .italic{ font-style:italic;}
 /*------home------page*/
 /*home-top*/
+.home_all{ height:90px;}
 .home_top_nav_wrapper{ margin:0 auto; background:#FFF; position:fixed; top:0; left:0; border-bottom:4px solid #c1d714; z-index:10; }
 .home_top_nav_logo{ float:left; margin-left:2%; margin-top:16px; width:261px; height:57px; background:url(../images/home_Logo.png) no-repeat;}
 /*home-main*/
-.home_main_content_wrapper{ float:left; margin:0 auto;  padding-bottom:5%; background:#009bdd;/*6.13*/}
+.home_main_content_wrapper{ float:left; margin:0 auto; padding-bottom:5%; background:#2FB4E9;/*6.13*/}
 .home_main_content_banner_title{ float:left; margin:5% auto; height:auto; font-size:90px;  color:#fff;}
 .home_main_content_banner_title .text{ float:left; margin:0 auto; text-align:center; font-weight:bold; }
 .home_main_content_banner_title .cloud{ float:left; margin:1% 0% 0% 30%; width:89px; height:40px; background:url(../images/home_banner_cloud.png) no-repeat; }
@@ -33,6 +34,7 @@ a,a:hover,a:link,a:visited,a:active{text-decoration:none;}
 .home_main_content_banner_title .bird_s{ float:right; margin:0.2% 30% 0% 0%; width:23px; height:7px; background:url(../images/home_banner_bird_s.png) no-repeat; }
 .home_main_content_banner_selbox{ float:left; margin:0 atuo; }
 .home_main_content_banner_sel{ float:left; margin:0 25%; padding:90px 0 0; background:#fff;}
+.home_main_content_banner_sel_all{ padding-bottom:90px;}
 .home_main_content_banner_sel .home_main_content_banner_s{ float:left; height:70px; margin:15px 6% 15px 7%; background:#fe611c; font-size:28px; text-indent:5px; line-height:70px; color:#fff; border-radius:5px; -moz-border-radius:5px;-webkit-border-radius:5px; box-shadow:2px 2px #c86539; font-family:"Microsoft Yahei","思源黑体"; color:#fff;}
 .home_main_content_banner_s:hover{ background:#ff4e00; color:#fff; cursor:pointer;}
 .home_main_content_banner_sel .home_main_content_banner_t{ float:left; height:70px; margin:15px 7% 15px 0%; background:#36a2fd; font-size:28px;  text-indent:5px; line-height:70px; color:#fff; border-radius:5px; -moz-border-radius:5px;-webkit-border-radius:5px; box-shadow:2px 2px #5699d2; font-weight:bold; }
@@ -66,13 +68,13 @@ a,a:hover,a:link,a:visited,a:active{text-decoration:none;}
 .home_t_aim_content_wrapper .aim_box{ background:#ebebeb; height:260px; margin:150px 0 80px;}
 .home_t_aim_content_wrapper .aim_con{ margin:8%; font-size:14px;}
 .home_t_aim_content_wrapper .aim_con h1{ font-weight:normal; font-size:26px;}
-.home_t_aim_content_wrapper .aim_img_orange{ margin:0 auto; margin-top:-40px; width:74px; height:74px; border-radius:50px; background:#78c23a;}
+.home_t_aim_content_wrapper .aim_img_orange{ margin:0 auto; margin-top:-40px; width:74px; height:74px; border-radius:50px; background:#78C23A;}
 .home_t_aim_content_wrapper .aim_img_blue{ margin:0 auto; margin-top:-40px; width:74px; height:74px; border-radius:50px; background:#78c23a;}
 .home_t_aim_content_wrapper .aim_img_1{ float:left; margin:12px; width:50px; height:50px; background:url(../images/aim_img_1.png) no-repeat;}
 .home_t_aim_content_wrapper .aim_img_2{ float:left; margin:12px; width:50px; height:50px; background:url(../images/aim_img_2.png) no-repeat;}
 .home_t_aim_content_wrapper .aim_img_3{ float:left; margin:12px; width:50px; height:50px; background:url(../images/aim_img_3.png) no-repeat;}
 /*teacher*/
-.home_t_teacher_content_wrapper{background:#434343;}
+.home_t_teacher_content_wrapper{background:#0069AB;}
 .home_t_teacher_content_wrapper h1{ margin:80px 0; color:#fff; font-size:50px; font-weight:normal; text-align:center;}
 .home_t_teacher_content_wrapper .teacher_dialogs{ margin-bottom:2em;}
 .home_t_teacher_content_wrapper .teacher_left{ float:left; }
@@ -97,50 +99,34 @@ a,a:hover,a:link,a:visited,a:active{text-decoration:none;}
 .person_top_nav_bar .sel{ font-weight:bold; color:#6EB243;}
 /*calendar-main*/
 .calendar_main_content_wrapper{ float:left; height:auto; min-height:800px;  background:#2EB4E9;}
-.calendar_box{ float:left; background:#313131;}
-.calendar_box .left{ float:left; height:auto; background:#313131;}
-.calendar_box .left_title_year{ float:left; margin-top:40px; height:20px; line-height:20px; text-align:center; font-size:20px; color:#b6b6b6;}
-.calendar_box .left_title_month{ float:left; margin-bottom:10px; height:30px; line-height:30px; text-align:center; font-size:30px; color:#b6b6b6;}
-.calendar_box .left_month, .calendar_box .left_month li{ float:left;}
-.calendar_box .left_month li a{ float:left; height:1.6em; line-height:1.6em; font-size:26px; color:#b6b6b6; text-align:center;}
-.calendar_box .left_month li .past{ color:#5d5d5d;}
-.calendar_box .left_month li a:hover{color:#fff; background:#494949;}
-.calendar_box .left_month li .past:hover{ color:#5d5d5d; background:none; cursor:default;}
-.calendar_box .left_month li .sel{ color:#fff; background:#36a2fd;}
-.calendar_box .right{ float:left; height:auto; background:#fff; padding-bottom:2em;  min-height:780px;}
-.calendar_box .right_top{ float:left; height:auto;}
-.calendar_box .right .top_left{ float:left; margin-left:4%; margin-top:20px; text-align:left; font-size:50px; color:#666;}
-.calendar_box .right .top_right{ float:right; margin-right:8%;  margin-top:50px; text-align:right;}
-.calendar_box .right .title{ float:right;}
-.calendar_box .top_right ul li{ float:right; margin-right:10px;}
-.calendar_box .top_right ul li a{ float:right; width:38px; height:38px; border-radius:50%; -moz-border-radius:50%; -webkit-border-radius:50%;  text-align:center; font-size:20px; line-height:40px; border:1px solid #36a2fd; }
-.calendar_box .top_right ul li a:hover, .calendar_box .top_right ul li .sel{ width:40px; height:40px; background:#36a2fd; color:#fff; border:none; }
-.calendar_box .right .top_right .title{ margin-right:20px; font-size:20px; color:#666; line-height:40px;}
-.calendar_box .right_content{ float:left; }
-.right_content ul{ float:left; }
-.right_content ul li{ float:left; height:auto; }
-.calendar_box .right_content .week_day{ float:left; width:100%; height:60px; font-size:18px; line-height:60px; background:#e2e2e2;  text-align:center; }
-.calendar_box .right_content .month_date{ float:left; height:auto; margin:10px 0; width:100%; font-size:30px; color:#666;  text-align:center; }
-.calendar_box .right_content .time_list_title{ float:left; width:90%; margin:5px 5%; background:#c3c3c3; height:42px; line-height:42px; font-size:18px; display:block;  text-align:center;}
-.calendar_box .right_content .time_list_title_sel{ background:#999; color:#fff;}
-.calendar_box .right_content .time_list_title:hover{ background:#999; color:#fff;}
-.calendar_box .right_content_li2{ background:#f6f6f6;}
-.calendar_box .right_content .time_list_con li{ float:left; width:100%;  font-size:14px; height:30px; line-height:30px;}
-.calendar_box .right_content .check_sel{ font-weight:bold;}
-.calendar_box .right_content input{ float:left; width:18px; height:18px; margin:6px 2px 6px 20% ;}
-.calendar_box .right_content .time_list_main{ float:left; width:100%; height:auto;}
+.calendar_bg{ width:90%; max-width:960px; background:#fff; border-radius:5px; margin: 4em auto 0;}
+.calendar_main_box{ width:94%; margin-left:3%; padding:30px 0; margin-bottom:40px;}
+.calendar_title{ font-size:24px; margin-bottom:20px;}
+.calendar_tips{ font-size:14px; }
+.calendar_main_box .line{border-bottom: 1px dashed #818181; width:100%; margin:20px 0;}
+.calendar_main_box .main_list{ width:100%;}
+.calendar_main_box .list{  width:100%; background:#f6f6f6; margin-bottom:20px; cursor:pointer;}
+.calendar_main_box .list:hover,.calendar_main_box .list_show{background:#e7e7e7; }
+.calendar_main_box .list_title .title{ font-size:16px; line-height:50px; display:inline; margin-left:15px;}
+.calendar_main_box .list_title .icon{ float:right; margin:19px; width:22px; height:12px; background:url(../images/calendar-arrow.png) no-repeat;}
+.calendar_main_box .list_title .icon_show{ float:right; margin:24px 19px; width:22px; height:2px; background:#989898;}
+.calendar_main_box .list_con_list{ padding:0px 15px 10px;}
+.calendar_main_box .list_con_list .class{ display:inline;}
+/*calendar-2*/
+.calendar_time_bg{ width:90%; max-width:960px; background:#fff; border-radius:5px; margin: 2em auto 0;}
+.calendar_tips_class{ font-size:16px; margin-bottom:10px; }
+.calendar_main_box .calendar_table_box{ height:820px;}
+.schedule_table .con_list span{ cursor:pointer;}
+.schedule_table .con_list .t_order{ background:none; color:#333; position:relative; }
+.schedule_table .con_list .t_sel{ background:#F89600; position:relative; }
+.schedule_table .con_list .t_cancel{ background:#fdb930; position:relative; }
 /*------schedule------page*/
 /*schedule-main*/
-.calendar_box .right_content .time_list_main .schedule_check{ float:left; width:100%; font-size: 14px;  height: 30px;  line-height: 30px;  width: 100%;}
-.calendar_box .right_content .schedule_check .check_sel{ font-weight:normal;}
-.calendar_box .right_content .time_list_main .button{ float:left; width:90%; margin:5px 5%; background:#c3c3c3; height:42px; line-height:42px; font-size:20px; display:block; text-align:center; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px;}
-.calendar_box .right_content .time_list_main .button:hover{ background:#fe611c; color:#fff;}
-.calendar_box .right_content .time_list_main .start{background:#fe611c; color:#fff;}
-.calendar_box .right_content .time_list_main .start:hover{background:#ff4e00; cursor:pointer;}
-.calendar_box .right_content .time_list_main .wait{ background:#fff; color:#999; border:1px solid #fe611c;}
-.calendar_box .right_content .time_list_main .wait:hover{ background:#fff; color:#999; border:1px solid #fe611c; cursor:default;}
-.calendar_box .right_content .time_list_main .disabled{background:#e2e2e2; color:#999; cursor:default;}
-.calendar_box .right_content .time_list_main .disabled:hover{background:#e2e2e2; color:#999; cursor:default;}
+.calendar_tips_img { float:left; font-size:12px; text-align:center; width:66px; height:auto; margin-right:10px; position:relative;}
+.calendar_tips_img img{ border:1px solid #b8b8b8;}
+.calendar_tips_img .img_name{ width:66px; height:auto;}
+.calendar_tips_student{ height:110px;}
+
 .calendar_button{ padding:1em 0; text-align:center; font-size:18px; text-align:center; vertical-align:middle;}
 .calendar_button a{  padding:0.7em 0.5em;  background:#F89600; color:#fff;  border-radius:5px; -moz-border-radius:5px;-webkit-border-radius:5px;  }
 .calendar_button a:hover{ color:#fff; background:#fdb930; cursor:pointer;}
@@ -152,7 +138,14 @@ a,a:hover,a:link,a:visited,a:active{text-decoration:none;}
 /*--auto*/
 .pure-form input[type="password"], .pure-form input[type="email"], .pure-form input[type="url"], .pure-form input[type="date"], .pure-form input[type="month"], .pure-form input[type="time"], .pure-form input[type="datetime"], .pure-form input[type="datetime-local"], .pure-form input[type="week"], .pure-form input[type="tel"], .pure-form input[type="color"], .pure-form input[type="number"], .pure-form input[type="search"], .pure-form input[type="text"], .pure-form select, .pure-form textarea{ font-size:14px; border: 1px solid #c9c9c9; border-radius:5px; box-shadow: 0 1px 2px #e2e2e2 inset; display: inline-block;padding:0.8em 0.5em;vertical-align: middle; color:#999999; width:280px;}
 .pure-form input:focus:not([type]), .pure-form input[type="password"]:focus, .pure-form input[type="email"]:focus, .pure-form input[type="url"]:focus, .pure-form input[type="date"]:focus, .pure-form input[type="month"]:focus, .pure-form input[type="time"]:focus, .pure-form input[type="datetime"]:focus, .pure-form input[type="datetime-local"]:focus, .pure-form input[type="week"]:focus, .pure-form input[type="tel"]:focus, .pure-form input[type="color"]:focus, .pure-form input[type="number"]:focus, .pure-form input[type="search"]:focus, .pure-form input[type="text"]:focus, .pure-form select:focus, .pure-form textarea:focus{ border:1px solid #a2c3fb;}
-.pure-form ,.pure-help-inline, .pure-form-message-inline, .error {color:red; display: inline-block; font-size: 0.875em; padding-left: 0.3em; vertical-align: middle; font-size:14px;}
+/*--auto第二组--个人资料*/
+.pure-form2 input[type="password"], .pure-form2 input[type="email"], .pure-form2 input[type="url"], .pure-form2 input[type="date"], .pure-form2 input[type="month"], .pure-form2 input[type="time"], .pure-form2 input[type="datetime"], .pure-form2 input[type="datetime-local"], .pure-form2 input[type="week"], .pure-form2 input[type="tel"], .pure-form2 input[type="color"], .pure-form2 input[type="number"], .pure-form2input[type="search"], .pure-form2 input[type="text"], .pure-form2 select, .pure-form2 textarea{ font-size:14px; border: 1px solid #c9c9c9; border-radius:5px; box-shadow: 0 1px 2px #e2e2e2 inset; display: inline-block;padding:0.8em 0.5em;vertical-align: middle; color:#999999; width:280px;}
+.pure-form2 input:focus:not([type]), .pure-form2 input[type="password"]:focus, .pure-form2 input[type="email"]:focus, .pure-form2 input[type="url"]:focus, .pure-form2 input[type="date"]:focus, .pure-form2 input[type="month"]:focus, .pure-form2 input[type="time"]:focus, .pure-form2 input[type="datetime"]:focus, .pure-form2 input[type="datetime-local"]:focus, .pure-form2 input[type="week"]:focus, .pure-form2 input[type="tel"]:focus, .pure-form2 input[type="color"]:focus, .pure-form2 input[type="number"]:focus, .pure-form2 input[type="search"]:focus, .pure-form2 input[type="text"]:focus, .pure-form2 select:focus, .pure-form2 textarea:focus{ border:1px solid #a2c3fb;}
+.pure-form2{color:red; display: inline-block; font-size: 0.875em; padding-left: 0.3em; vertical-align: middle; font-size:14px;}
+.pure-form-message-inline2{ position:absolute; left:16em; top:50px;}
+.pure-form2, .pure-form-message-inline2{color:red; display: inline-block; font-size: 0.875em; padding-left: 0.3em; vertical-align: middle; font-size:14px;}
+/*--end--*/
+.pure-form ,.pure-help-inline, .pure-form-message-inline{color:red; display: inline-block; font-size: 0.875em; padding-left: 0.3em; vertical-align: middle; font-size:14px;}
 .signin_left ,.signin_right{ float:left; height:1em;}
 .pure-form-aligned .pure-control-group label{ display: inline-block; margin: 0 1em 0 0; text-align: right; vertical-align: middle; width: 10em;}
 .pure-form .pure-checkbox, .pure-form .pure-radio{display: block; margin: 0.5em 0; color:#999; font-size:12px;} 
@@ -163,7 +156,7 @@ a,a:hover,a:link,a:visited,a:active{text-decoration:none;}
 .signin_main_content_wrapper{ background:#f6f5f6;}
 .pure-button-primary, .pure-button-selected, a.pure-button-primary, a.pure-button-selected{background-color: #0078E7; color: #FFFFFF;}
 .pure-form-aligned .pure-controls{margin: 1.5em 0 0 16em;}
-.pure-form-aligned .pure-control-group{margin-bottom: 2em;} 
+.pure-form-aligned .pure-control-group{margin-bottom: 2em; position:relative;} 
 .pure-control-group label{ font-size:20px; }
 .signin_main_content_wrapper{ float:left; min-height:800px; background:#2eb4e9;}
 .signin_box_bg{ margin:0 auto; width:90%; max-width:960px; background:#fff; border-radius:5px;}
@@ -210,8 +203,10 @@ a,a:hover,a:link,a:visited,a:active{text-decoration:none;}
 /*------person------page*/
 .person_title_main .button_edit{ float:right;margin-top:10px; padding:0 2em; margin-right:2%; font-size:16px; height:30px; line-height:30px; border:1px solid #8F8F8F; -moz-border-radius: 5px;	-webkit-border-radius: 5px; border-radius: 5px;}
 .person_edit_main .person_date_text{text-align:left; line-height: 10px; text-indent: 4px;  width: 20em; font-size:16px; margin: 0 1em 0 0; display: inline-block; font-size:20px; vertical-align: middle;}
-.edit_button{ margin-top:1em; margin-bottom:4em; width:150px; background-color:#f89600; border-radius: 5px; font-family: inherit; font-size:18px; padding:0.7em 0.5em; text-decoration: none; color:#666; border:none; color:#fff;}
+.edit_button{ margin-top:1em; margin-bottom:4em; width:104px; background-color:#f89600; border-radius: 5px; font-family: inherit; font-size:18px; padding:0.7em 0.5em; text-decoration: none; color:#666; border:none; color:#fff; display:block; text-align:center;}
 .edit_button:hover{ background:#fdb930; color:#fff;}
+.personal_submit_button{ margin-top:2em; margin-bottom:1em; width:292px; background-color: #f89600; border: medium none transparent; border-radius: 5px; font-family: inherit; font-size:18px; padding:0.7em 0.5em; text-decoration: none; display:block; text-align:center; color:#fff;}
+
 /*------学生首页------page*/
 .home_s_main_content_wrapper{ padding:0; background:#2fb4e9;}
 .home_s_main_content_banner_title{ float:left; margin:50px 0 20px 8%; height:auto;  position:relative;}
@@ -253,7 +248,7 @@ a,a:hover,a:link,a:visited,a:active{text-decoration:none;}
 
 /*------学生约课------page*/
 /*学生选择课程套餐*/
-.mentor{ margin-top:13em; margin-bottom:2em; }
+.mentor{ margin-top:4.5em; margin-bottom:2em; }
 .mentor_box{ margin:0 auto; max-width:960px;}
 .mentor_box .mentor{ margin:0 auto; width:60%; height:20px;}
 .mentor_box .mentor_line{ margin:0 auto; width:100%; height:4px; background:#fff;  border-radius:50px;}
@@ -262,7 +257,7 @@ a,a:hover,a:link,a:visited,a:active{text-decoration:none;}
 .mentor_box .mentor_list{ margin:0 auto; width:60%; height:auto;}
 .mentor_box .mentor_list .list{ float:left; width:50%; text-align:center; color:#fff; font-size:20px;}
 .box_bg{ margin:0 auto; width:90%; max-width:960px; height:auto; background:#fff; border-radius:5px;}
-.s_calendar_box{ width:94%; margin-left:3%; padding-bottom:30px; margin-bottom:40px;}
+.s_calendar_box{ width:94%; margin-left:3%;padding-top:10px; padding-bottom:30px; margin-bottom:40px;}
 .s_calendar_box .title{ padding:30px 0 20px; color:#333; font-size:14px;}
 .s_calendar_courselist{ width:100%; margin-bottom:20px;}
 table.s_calendar_courselist td{border:1px solid #d8d8d8; padding:10px; text-align:center;}
@@ -330,8 +325,22 @@ table.s_calendar_courselist .btn_over{ background:none; color:#333;}
 .class_details .btn_class:hover{ background:#fdb930;}
 .class_details .btn_cancel{ background:none; color:#00AFF2;}
 .class_details .line{ float:left; border-bottom: 1px dashed #818181; margin:5px 0; width: 100%;}
+/*教师计划学生个人信息-弹出框*/
+.calendar_class_details{ position:absolute; left:65px; top:0px;}
 
 
+
+
+
+@media all and (min-width:768px) and (max-width:1280px) { 
+.home_main_content_banner_title{ font-size:70px; }
+.home_main_content_banner_title .cloud{ margin:4% 0% 0% 15%; }
+.home_main_content_banner_title .bird{ margin:0.7% 2% 0% 0%;}
+.home_main_content_banner_title .bird_s{ margin:0.2% 10% 0% 0%; }
+.home_main_content_banner_sel{ margin-left:0; margin-right:0; padding:10% 0; background:#fff;}
+.home_main_content_banner_sel .home_main_content_banner_s{  margin:0 0 0 6.6%; font-size:22px;}
+.home_main_content_banner_sel .home_main_content_banner_t{ margin:0px 6.6% 0; font-size:22px;}
+.home_t_aim_content_wrapper .aim_box{height:auto;}
 /*home-t-teacher*/
 .home_t_teacher_content_wrapper .teacher_left p{ text-indent:15px;}
 .home_t_teacher_content_wrapper .teacher_right_arrow{}
@@ -340,18 +349,21 @@ table.s_calendar_courselist .btn_over{ background:none; color:#333;}
 .home_t_teacher_content_wrapper .teacher_right_left img{ width:75%; height:auto;}
 .home_t_teacher_content_wrapper .teacher_right_left_arrow{ position:absolute; top:20px; right:-10px; border-top: 10px solid transparent; border-left: 10px solid #aaaaaa; border-bottom: 10px solid transparent;}
 /*home-t-banner*/
-/*.signin_main_content{ width:80%;}
-.signin_main_content .sign_link{ margin-right:5%;}*/
+.signin_main_content{ width:80%;}
+.signin_main_content .sign_link{ margin-right:5%;}
 .pure-form, .pure-help-inline, .pure-form-message-inline{ padding-left:0;}
-/*.signin_main_content .pure-control-group label{ width:100%; font-size:16px; text-align:left;}*/
-/*.pure-form input[type="password"], .pure-form input[type="email"], .pure-form input[type="url"], .pure-form input[type="date"], .pure-form input[type="month"], .pure-form input[type="time"], .pure-form input[type="datetime"], .pure-form input[type="datetime-local"], .pure-form input[type="week"], .pure-form input[type="tel"], .pure-form input[type="color"], .pure-form input[type="number"], .pure-form input[type="search"], .pure-form input[type="text"], .pure-form select, .pure-form textarea{ width:93%;}*/
-/*.pure-form, .pure-help-inline, .pure-form-message-inline{ width:100%; margin:0; }
-*//*.pure-form-aligned .pure-controls{ margin:0;}*/
+.signin_main_content .pure-control-group label{ width:100%; font-size:16px; text-align:left;}
+.pure-form input[type="password"], .pure-form input[type="email"], .pure-form input[type="url"], .pure-form input[type="date"], .pure-form input[type="month"], .pure-form input[type="time"], .pure-form input[type="datetime"], .pure-form input[type="datetime-local"], .pure-form input[type="week"], .pure-form input[type="tel"], .pure-form input[type="color"], .pure-form input[type="number"], .pure-form input[type="search"], .pure-form input[type="text"], .pure-form select, .pure-form textarea{ width:93%;}
+.pure-form, .pure-help-inline, .pure-form-message-inline{ width:100%; margin:0; }
+.pure-form-aligned .pure-controls{ margin:0;}
+.pure-form-aligned .personal_btn{margin: 1.5em 0 0 16em;}
+.home_t_main_content_banner_title{ margin-left:7%;}
 .home_t_main_content_banner_title .plane{ display:none;}
-/*.home_t_main_content_banner_selbox{ margin-left:7%;}
+.home_t_main_content_banner_selbox{ margin-left:7%;}
 .sign_button{ width:98%;}
-/*.home_t_nav_logo_img{ float:left; margin-left:6%; margin-top: 7px; width:90px; height:15px; background:url(../images/home_Logo_s.png) no-repeat;}*/
+.home_t_nav_logo_img{ float:left; margin-left:6%; margin-top:10px; width:123px; height:27px; background:url(../images/home_Logo_s.png) no-repeat;}
 /*------学生首页------page*/
+.home_t_nav_bar a{ font-size:16px;}
 .home_t_aim_content_wrapper .aim_con h1{ font-size:22px;}
 .home_t_aim_content_wrapper .aim_box{ height:auto; margin:100px 0 40px;}
 .home_t_aim_content_wrapper .student_aim_con h1{ font-size:22px;}
@@ -365,15 +377,9 @@ table.s_calendar_courselist .btn_over{ background:none; color:#333;}
 .home_student_class_wrapper .s_class_bg{ float:right;}
 .home_student_class_wrapper .s_class_bg img{ float:right; width:auto; height:auto;}
 /*登录*/
-/*.pure-form-message-inline{ position:absolute; left:0em; top:70px;}*/
-/*.phone-code{ position:absolute; right:5%; top:70px; text-align:right;}
-*/
-
-
+.pure-form-message-inline{ position:absolute; left:0em; top:70px;}
+.phone-code{ position:absolute; right:5%; top:70px; text-align:right;}
 }
-
-
-
 
 
 
@@ -403,12 +409,14 @@ table.s_calendar_courselist .btn_over{ background:none; color:#333;}
 .pure-form input[type="password"], .pure-form input[type="email"], .pure-form input[type="url"], .pure-form input[type="date"], .pure-form input[type="month"], .pure-form input[type="time"], .pure-form input[type="datetime"], .pure-form input[type="datetime-local"], .pure-form input[type="week"], .pure-form input[type="tel"], .pure-form input[type="color"], .pure-form input[type="number"], .pure-form input[type="search"], .pure-form input[type="text"], .pure-form select, .pure-form textarea{ width:93%;}
 .pure-form, .pure-help-inline, .pure-form-message-inline{ width:100%; margin:0; }
 .pure-form-aligned .pure-controls{ margin:0;}
+.pure-form-aligned .personal_btn{margin: 1.5em 0 0 16em;}
 .home_t_main_content_banner_title{ margin-left:7%;}
 .home_t_main_content_banner_title .plane{ display:none;}
 .home_t_main_content_banner_selbox{ margin-left:7%;}
 .sign_button{ width:98%;}
-.home_t_nav_logo_img{ float:left; margin-left:6%; margin-top: 7px; width:90px; height:15px; background:url(../images/home_Logo_s.png) no-repeat;}
+.home_t_nav_logo_img{ float:left; margin-left:6%; margin-top:10px; width:123px; height:27px; background:url(../images/home_Logo_s.png) no-repeat;}
 /*------学生首页------page*/
+.home_t_nav_bar a{ font-size:16px;}
 .home_t_aim_content_wrapper .aim_con h1{ font-size:20px;}
 .home_t_aim_content_wrapper .student_aim_con h1{ font-size:20px;}
 .home_t_aim_content_wrapper .student_aim_con{ font-size:14px;}
@@ -452,12 +460,13 @@ table.s_calendar_courselist .btn_over{ background:none; color:#333;}
 .pure-form input[type="password"], .pure-form input[type="email"], .pure-form input[type="url"], .pure-form input[type="date"], .pure-form input[type="month"], .pure-form input[type="time"], .pure-form input[type="datetime"], .pure-form input[type="datetime-local"], .pure-form input[type="week"], .pure-form input[type="tel"], .pure-form input[type="color"], .pure-form input[type="number"], .pure-form input[type="search"], .pure-form input[type="text"], .pure-form select, .pure-form textarea{ width:93%;}
 .pure-form, .pure-help-inline, .pure-form-message-inline{ width:100%; margin:0; }
 .pure-form-aligned .pure-controls{ margin:0;}
+.pure-form-aligned .personal_btn{margin: 1.5em 0 0 16em;}
 .home_t_main_content_banner_title{ margin-left:7%;}
 .home_t_main_content_banner_title .plane{ display:none;}
 .home_t_main_content_banner_selbox{ margin-left:7%;}
 .sign_button{ width:98%;}
-.home_t_nav_logo_img{ float:left; margin-left:6%; margin-top:7px; width:90px; height:15px; background:url(../images/home_Logo_s.png) no-repeat;}
-.person_top_nav_logo{ float:left; margin-top:22px; width:90px; height:15px; background:url(../images/home_Logo_s.png) no-repeat;}
+.home_t_nav_logo_img{ float:left; margin-left:6%;  margin-top:10px; width:123px; height:27px; background:url(../images/home_Logo_s.png) no-repeat;}
+.person_top_nav_logo{ float:left; margin-top:10px; width:123px; height:27px; background:url(../images/home_Logo_s.png) no-repeat;}
 /*------学生首页------page*/
 .home_t_nav_bar a{ margin-right:5px; height:40px; line-height:40px; font-size:12px; color:#666;}
 .home_t_aim_content_wrapper .aim_con h1{ font-size:18px;}

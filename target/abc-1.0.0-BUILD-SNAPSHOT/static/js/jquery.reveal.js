@@ -17,7 +17,7 @@
  Listener for data-reveal-id attributes
 ----------------------------*/
 
-	$('a[data-reveal-id]').live('click', function(e) {
+	$('a[data-reveal-id]').bind('click', function(e) {
 		e.preventDefault();
 		var modalLocation = $(this).attr('data-reveal-id');
 		$('#'+modalLocation).reveal($(this).data());
@@ -87,7 +87,8 @@
 						modalBG.css({"display":"block"});	
 						unlockModal()				
 					}
-				}
+					
+				}				
 				modal.unbind('reveal:open');
 			}); 	
 
@@ -118,6 +119,9 @@
 						modal.css({'visibility' : 'hidden', 'top' : topMeasure});
 						modalBG.css({'display' : 'none'});	
 					}		
+				}
+			  	if(typeof options.callBack !='undefined'){
+					options.callBack();
 				}
 				modal.unbind('reveal:close');
 			});     

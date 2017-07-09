@@ -33,7 +33,7 @@ public class SQLConstant {
 			+" ( SELECT U_ID FROM NEU.NEU_ABC_TCH_PROD_TYPE WHERE P_TYPE IN  "
 			+ "  ( SELECT P_TYPE FROM NEU.NEU_ABC_STU_PROD_TYPE "
 			+ " WHERE U_ID=?"
-			+ " ) ) and  cls_end > DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') order by CLS_START " ;//大于现在的时间
+			+ " ) ) and  cls_start > DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') order by CLS_START " ;//大于现在的时间
 			
 	public static String TEACHER_CLASS_AVAILABLE
 			= " SELECT A.U_ID, A.U_NICK, C.P_TYPE_NAME " //返回老师的 ID，名称，以及供选择的课
@@ -74,4 +74,42 @@ public class SQLConstant {
 	
 	public static String DELETE_TEACHER_TM = "DELETE FROM neu_abc_tch_tm "
 			+ "WHERE U_ID = ? AND CLS_START = ? ";
+	
+	public static String GET_TEACHER_BY_STARTTM = " SELECT A.U_ID, A.U_NICK, P_TYPE, P_TYPE_NAME, COUNT(B.U_S_ID)  FROM "
+			+ " (SELECT A.U_ID, C.U_NICK, CLS_START, P_TYPE, P_TYPE_NAME FROM NEU_ABC_TCH_TM A  , NEU_ABC_TCH_PROD_TYPE B, NEU_ABC_USER C, "
+			+ " (SELECT DISTINCT B.P_TYPE_ID, B.P_TYPE_NAME FROM NEU_ABC_STU_PROD_TYPE A, NEU_ABC_PROD_TYPE B "
+			+ "  WHERE A.U_ID= ? AND A.P_TYPE = B.P_TYPE_ID ) T "
+			+ " WHERE A.CLS_START = ?  AND T.P_TYPE_ID = B.P_TYPE "
+			+ " AND A.U_ID = C.U_ID AND A.U_ID = B.U_ID) A  LEFT JOIN NEU_ABC_TCH_STU_TM B "
+			+ " ON A.U_ID = B.U_T_ID AND A.CLS_START = B.CLS_START "
+			+ " GROUP BY A.U_ID, A.U_NICK,P_TYPE, P_TYPE_NAME order by a.u_id ";
+	
+	public static String GET_ALL_PRODUCT_BY_USER = " SELECT A.p_id, a.p_name, a.p_type_id  FROM NEU_ABC_PROD A, "
+			+ " NEU_ABC_PROD_TYPE B, NEU_ABC_STU_PROD_TYPE C "
+			+ " WHERE A.P_TYPE_ID = B.P_TYPE_ID AND B.P_TYPE_ID = C.P_TYPE"
+			+ " AND C.U_ID = ? order by a.p_type_id ";
+	
+	public static String SAVE_CLS_FOR_STU = " INSERT INTO NEU_ABC_TCH_STU_TM "
+			+ " (U_T_ID, U_S_ID,CLS_START,CLS_STATUS,CLS_PROD) "
+			+ " VALUES(?,?,?, 'R',?); ";//Reserved
+	
+	public static String CANCEL_STU_CLASS = " DELETE from neu_abc_tch_stu_tm "
+			+" WHERE U_S_ID=? AND CLS_START= ? ";
+	
+	public static String CANCEL_TEACHER_CLASS = " DELETE from neu_abc_tch_stu_tm "
+			+" WHERE U_T_ID=? AND CLS_START= ? ";
+	
+	public static String QUERY_CLASS_DETAILS =" SELECT B.U_ID, B.U_NICK, C.P_ID, C.P_NAME, D.P_TYPE_ID, D.P_TYPE_NAME "
+			+ " FROM NEU_ABC_TCH_STU_TM A, NEU_ABC_USER B, NEU_ABC_PROD C, NEU_ABC_PROD_TYPE D "
+			+ " WHERE A.U_T_ID = B.U_ID AND A.CLS_PROD = C.P_ID AND C.P_TYPE_ID = D.P_TYPE_ID "
+			+ " AND A.U_S_ID = ? AND A.CLS_START = ?";
+	public static String QUERY_CLASS_DETAILS_TEACHER = " SELECT B.U_ID, B.U_NICK, C.P_ID, C.P_NAME, D.P_TYPE_ID, D.P_TYPE_NAME, B.U_PHOTO_ADD "
+			+ " FROM NEU_ABC_TCH_STU_TM A, NEU_ABC_USER B, NEU_ABC_PROD C, NEU_ABC_PROD_TYPE D "
+			+ " WHERE A.U_S_ID = B.U_ID AND A.CLS_PROD = C.P_ID AND C.P_TYPE_ID = D.P_TYPE_ID "
+			+ " AND A.U_T_ID = ? AND A.CLS_START = ?";
+	public static String UPDATE_USER_ENG_LEV = " UPDATE NEU_ABC_USER SET U_EXT = ? WHERE U_ID = ? ";
+	
+	public static String ADD_DEFAULT_PRODUCT_S = "INSERT INTO neu_abc_stu_prod_type  (U_ID,P_TYPE) VALUES (?,11);" ;
+	
+	public static String ADD_DEFAULT_PRODUCT_T = "INSERT INTO neu_abc_tch_prod_type  (U_ID,P_TYPE) VALUES (?,11);" ;
 }

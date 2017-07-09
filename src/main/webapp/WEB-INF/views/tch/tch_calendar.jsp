@@ -4,7 +4,76 @@
 
 <script>
 var tempEvent=null;
-	$(document).ready(function() {
+var editEvent=null;
+	$(document).ready(function() {		
+			$("#classDetails").dialog({
+				height: 250,
+			      width: 350,
+			      modal: true,
+			      buttons: {
+			        "Cancel Class": function(){
+			        	$.ajax({
+							type : 'POST',
+							//contentType : 'application/json',  
+							url : 'cls/cancelTeacherClass',
+							data : {
+								startTime : $("#classStartTime").text()
+							},
+							dataType : 'json',
+							success : function(data) {
+								if (data.status == 'true') {
+									if(editEvent !=null){
+										$('#calendar').fullCalendar('removeEvents', editEvent._id);
+										editEvent=null;
+										$("#classDetails").dialog( "close" );
+									} 
+								}else{
+									$("#DetailError").text(data.msg);
+								}							
+							},
+							error : function(data) {
+								$("#DetailError").text("System unavailable, please try again later.");
+							}
+						});	
+			        },
+			        "Enter Classroom": function(){
+			        	$.ajax({
+							type : 'POST',
+							//contentType : 'application/json',  
+							url : 'cls/teacherStartClass',
+							data : {
+								startTime : $("#classStartTime").text()
+							},
+							dataType : 'json',
+							success : function(data) {
+								if (data.status == 'true') {
+									
+								}else{
+									$("#DetailError").text(data.msg);
+								}							
+							},
+							error : function(data) {
+								$("#DetailError").text("System Unavailable.");
+							}
+						});	
+			        },
+			        "Close": function() {
+			          $("#classDetails").dialog( "close" );
+			        }
+			      },
+			      close: function() {  
+			    	  $("#classStartTime").text("");
+			    	  $("#stc_nick").text("");
+			    	  $("#class_type").text("");
+			    	  $("#class_name").text("");
+			    	  $("#DetailError").text("");		    	  
+			    	  editEvent=null;
+			      },
+			      autoOpen: false,
+			      show: {	effect: "blind",duration: 200}, hide: { effect: "blind", duration: 200  }
+			 });
+		
+		
 		$("#scheduleDialog").dialog({
 			height: 225,
 		      width: 350,
@@ -28,7 +97,8 @@ var tempEvent=null;
 											id:"Ava_"+tempEvent._start,
 											txt: "Available",
 											start: tempEvent._start,
-											end: tempEvent._end
+											end: tempEvent._end,
+											color: "#00C5CD"
 										};
 									$('#calendar').fullCalendar('renderEvent', eventData, true); 
 									$("#scheduleDialog").dialog( "close" );
@@ -189,9 +259,40 @@ var tempEvent=null;
 					$("#DeleteConfirmS").text( event.start._i );
 					$("#DeleteConfirmE").text( event.end._i );
 					$( "#deleteDialog" ).dialog( "open" );
-				}else if(event._id.indexOf("Rsv_")==0 || //点击弹出明细窗口
-						event._id.indexOf("Fin_")==0 || event._id.indexOf("Run_")==0){
-					
+				}else {					
+					$('.ui-dialog-buttonset').find('button:contains("Cancel Class")').hide();
+			    	$('.ui-dialog-buttonset').find('button:contains("Enter Classroom")').hide();
+					if(event._id.indexOf("Rsv_")==0 ){
+						$('.ui-dialog-buttonset').find('button:contains("Cancel Class")').show();
+					}else if(event._id.indexOf("Run_")==0){
+						$('.ui-dialog-buttonset').find('button:contains("Enter Classroom")').show();
+						$('.ui-dialog-buttonset').find('button:contains("Enter Classroom")').css("background","#4B824B");
+						$('.ui-dialog-buttonset').find('button:contains("Enter Classroom")').css("color","#FFF");
+					}
+					editEvent=event;	
+			    	$.ajax({
+							type : 'POST',
+							url : 'cls/getClassDetailt',
+							data : {
+								startTime : event.start._i
+							},
+							dataType : 'json',
+							success : function(data) {
+								$("#classStartTime").text(event.start._i);
+								if (data.status == 'true') {
+							    	  $("#stu_nick").text(data.snick);
+							    	  $("#class_type").text(data.typename);
+							    	  $("#class_name").text(data.pname);
+								} else{
+									$("#DetailError").text(data.msg);
+								}	
+								$( "#classDetails" ).dialog( "open" );
+							},
+							error : function(data) {
+								$("#DetailError").text("System unavailable.");
+								$("#classDetails").dialog( "open" );
+							}
+						});
 				}				
 			},
 			dayRender:function( date, cell ) { 
@@ -246,11 +347,13 @@ var tempEvent=null;
 	margin:0 !important;
 }
 .fc-event{
-	background-color:#f89600;
+	background-color:#FFA088;
 	color:#FFF !important;
 	border: 0;
 	border-radius:0;
-	font-size:16px;
+	font-size: 14px;
+    text-align: center;
+    padding-top: 2px;
 }
 
 
@@ -277,15 +380,15 @@ var tempEvent=null;
             <p class="calendar_tips_class"><span class="bold">Students: </span></p>
             <div class="calendar_tips_student">
                 <div class="calendar_tips_img">
-                    <img src="images/img1.png" />
+                    <img src="<%=request.getContextPath()%>/static/neu/images/img1.png" />
                     <p class="img_name">Abby</p>
                 </div>
                 <div class="calendar_tips_img">
-                    <img src="images/img1.png" />
+                    <img src="<%=request.getContextPath()%>/static/neu/images/img1.png" />
                     <p class="img_name">Abby</p>
                 </div>
                 <div class="calendar_tips_img">
-                    <img src="images/img1.png" />
+                    <img src="<%=request.getContextPath()%>/static/neu/images/img1.png" />
                     <p class="img_name">Abby</p>
                     <div class="class_details calendar_class_details">
                         <div class="title">Personal data</div>
@@ -323,4 +426,11 @@ var tempEvent=null;
 
 <div class="footer pure-u-1">
 	<p class="copyright">Copyright &copy; 2017 NP Technology. All rights reserved. </p>
+</div>
+<div id="classDetails" class="popup" title="课堂详情">
+   <p>时间：<span id="classStartTime"></span></p>
+   <p>学生：<span id="stu_nick"></span></p></p>
+   <p>课程：<span id="class_type"></span></p></p>
+   <p>课题：<span id="class_name"></span></p>
+   <p id="DetailError" style="color:red;padding-top:6px"></p>
 </div>

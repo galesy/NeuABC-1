@@ -14,7 +14,7 @@
 </style> 
 <div class="home_top_nav_wrapper pure-u-1">
 	<div class="top">
-	<span class="home_t_nav_logo pure-u-1-4"><a href="<%=request.getContextPath() %>" class="home_t_nav_logo_img"></a></span>
+	<span class="home_t_nav_logo pure-u-1-4"><a href="/" class="home_t_nav_logo_img"></a></span>
     <a href="<%=request.getContextPath() %>/login" class="home_nav_button">登录</a>
     </div>
 	<ul class="home_t_nav_bar pure-u-1-2" style="margin-top: -27px;">

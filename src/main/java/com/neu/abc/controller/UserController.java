@@ -3,6 +3,7 @@ package com.neu.abc.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 
 import com.neu.abc.db.UserMgr;
 import com.neu.abc.exceptions.DataAccessException;
@@ -59,6 +61,7 @@ public class UserController {
 					status ="Success";
 					message ="Success";
 				}
+				usermgr.addDefaultProduct(user.getId(), "T");
 			}
 		}else{						
 			message = "You must accept agreement to Sign In.";
@@ -90,6 +93,7 @@ public class UserController {
 					request.getSession().setAttribute(Constants.SESSION_USER, user);
 					status ="Success";
 					message ="Success";
+					usermgr.addDefaultProduct(user.getId(), "S");
 				}
 			}
 		}else{						

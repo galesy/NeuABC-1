@@ -1,5 +1,9 @@
 package com.neu.abc.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class ClassTimeFrame {
 	private String className;
 
@@ -62,6 +66,18 @@ public class ClassTimeFrame {
 	}
 
 	public String getEndTime() {
+		if(endTime==null && startTime !=null){
+			try{
+				SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");  
+				Date date = formatter.parse(startTime);
+				Calendar cal = Calendar.getInstance(); 
+				cal.setTime(date);
+				cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE)+30);
+				return formatter.format(cal.getTime());
+			}catch(Exception e){
+				return null;
+			}
+		}
 		return endTime;
 	}
 

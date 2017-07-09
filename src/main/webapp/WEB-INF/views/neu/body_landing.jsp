@@ -3,44 +3,132 @@
 	pageEncoding="UTF-8"%>
 
 <script>
+var prods=null;
 var tempEvent=null;
+var editEvent=null;
 	$(document).ready(function() {
+		$("#scheduleDetails").dialog({
+			height: 250,
+		      width: 350,
+		      modal: true,
+		      buttons: {
+		        "取消上课": function(){
+		        	$.ajax({
+						type : 'POST',
+						//contentType : 'application/json',  
+						url : 'cls/cancelStudentClass',
+						data : {
+							startTime : $("#classStartTime").text()
+						},
+						dataType : 'json',
+						success : function(data) {
+							if (data.status == 'true') {
+								if(editEvent !=null){
+									$('#calendar').fullCalendar('removeEvents', editEvent._id);
+									editEvent=null;
+									$("#scheduleDetails").dialog( "close" );
+								} 
+							}else{
+								$("#DetailError").text(data.msg);
+							}							
+						},
+						error : function(data) {
+							$("#DetailError").text("系统繁忙，请稍候再试");
+						}
+					});	
+		        },
+		        "开始上课": function(){
+		        	$.ajax({
+						type : 'POST',
+						//contentType : 'application/json',  
+						url : 'cls/studentStartClass',
+						data : {
+							startTime : $("#classStartTime").text()
+						},
+						dataType : 'json',
+						success : function(data) {
+							if (data.status == 'true') {
+								
+							}else{
+								$("#DetailError").text(data.msg);
+							}							
+						},
+						error : function(data) {
+							$("#DetailError").text("系统繁忙，请稍候再试");
+						}
+					});	
+		        },
+		        "关闭": function() {
+		          $("#scheduleDetails").dialog( "close" );
+		        }
+		      },
+		      close: function() {  
+		    	  $("#classStartTime").text("");
+		    	  $("#tch_nick").text("");
+		    	  $("#class_type").text("");
+		    	  $("#class_name").text("");
+		    	  $("#DetailError").text("");
+		    	  $('.ui-dialog-buttonset').find('button:contains("取消上课")').show();
+		    	  $('.ui-dialog-buttonset').find('button:contains("开始上课")').hide();
+		    	  editEvent=null;
+		      },
+		      autoOpen: false,
+		      show: {	effect: "blind",duration: 200}, hide: { effect: "blind", duration: 200  }
+		 });
 		$("#scheduleDialog").dialog({
 			height: 250,
 		      width: 350,
 		      modal: true,
 		      buttons: {
 		        "确定": function(){
-		        	if(tempEvent !=null){
-						$('#calendar').fullCalendar('removeEvents', tempEvent._id);
-						var eventData = {
-								title: "已预约",
-								start: tempEvent._start,
-								end: tempEvent._end
-							};
-						$('#calendar').fullCalendar('renderEvent', eventData, true); 
-						$("#scheduleDialog").dialog( "close" );
-					} 
+		        	$.ajax({
+						type : 'POST',
+						//contentType : 'application/json',  
+						url : 'cls/reserveStudentClass',
+						data : {
+							startTime : $("#timetext").text(),
+							tid: $("#tid").val(),
+							pid:$("#pid").val()
+						},
+						dataType : 'json',
+						success : function(data) {
+							if (data.status == 'true') {
+								if(tempEvent !=null){
+									$('#calendar').fullCalendar('removeEvents', tempEvent._id);
+									var eventData = {
+											id:"Rsv_n"+tempEvent._start,
+											txt: "已预约",
+											start: tempEvent._start,
+											end: tempEvent._end,
+											color:"#4B824B"
+										};
+									$('#calendar').fullCalendar('renderEvent', eventData, true); 
+									$("#scheduleDialog").dialog( "close" );
+								} 
+							}else{
+								$("#SelectError").text(data.msg);
+							}							
+							$( "#scheduleDialog" ).dialog( "close" );
+						},
+						error : function(data) {
+							$("#SelectError").text("系统繁忙，请稍候再试");
+						}
+					});	
 		        },
 		        "取消": function() {
 		          $("#scheduleDialog").dialog( "close" );
 		        }
 		      },
 		      close: function() {
+		    	  clearClassSelection();
 		    	  if(tempEvent !=null){
 						$('#calendar').fullCalendar('removeEvents', tempEvent._id);
 						tempEvent ==null;
 					}      
 		      },
 		      autoOpen: false,
-		      show: {
-		        effect: "blind",
-		        duration: 200
-		      },
-		      hide: {
-		        effect: "blind",
-		        duration: 200
-		      }});
+		      show: {	effect: "blind",duration: 200}, hide: { effect: "blind", duration: 200  }
+		 });
 		
 		
 		$('#calendar').fullCalendar({
@@ -48,20 +136,24 @@ var tempEvent=null;
 				left: null
 				//,right: 'agendaWeek'
 			},
-			events:[{"color":"#ff9f89","start":"2017-04-03 18:23:13","end":"2017-07-02 07:00:00","id":"NA_a0"},{"color":"#ff9f89","start":"2017-07-04 12:00:00","end":"2017-07-05 08:00:00","id":"NA_a3"},{"color":"#ff9f89","start":"2017-07-05 12:00:00","end":"2017-07-07 09:00:00","id":"NA_a5"},{"color":"#ff9f89","start":"2017-07-11 12:00:00","end":"2018-02-03 18:23:13","id":"NA_a"}
-			],
+			events:{
+				url: 'cls/getTimeFrame',
+				error: function(data) {
+					console.log(data);
+				}
+			},
 			eventRender: function(event, element) {
-				if(event._id.indexOf("NA_")==0){
+				if(event._id.indexOf("NA_")==0 ){
 					element.text("");
 					element.css("opacity",0.3);
 				}else if(event._id =="temp"){
 					tempEvent=event;
-					element.text("设定中");
-					element.css("opacity",0.3);
+					element.text("设定");
+					element.css("opacity",0.5);
 				}
 				if(typeof event.txt !="undefined"){
 					element.text(event.txt);
-				}
+				}				
 		    },
 			//locale:"zh-CN",
 			//theme: true,
@@ -88,16 +180,11 @@ var tempEvent=null;
 			},
 			dayClick: function(date, allDay, jsEvent, view) {
 				var stt = $.fullCalendar.formatDate(date, "YYYY-MM-DD HH:mm:ss");
-				var ymdh = stt.substring(0,14);
-				if(date._i[4]==30){
-					ymdh+="59:59";
-				}else{
-					ymdh+="29:59";
-				}
+				var ett = $.fullCalendar.formatDate(moment(date).add(30, 'm'), "YYYY-MM-DD HH:mm:ss");
 				var eventData = {
 						id:"temp",
 						start: stt,
-						end: ymdh
+						end: ett
 					};
 				if(tempEvent !=null){
 					$('#calendar').fullCalendar('removeEvents', tempEvent._id);
@@ -108,19 +195,25 @@ var tempEvent=null;
 					//contentType : 'application/json',  
 					url : 'cls/preSelectEvent',
 					data : {
-						startTime : stt
+						startTime : stt,
+						getProd: prods==null?"Y":"N"
 					},
 					dataType : 'json',
 					success : function(data) {
-						console.log(JSON.stringfy(data));
-						if (data.status == 'success') {
-							
-						} 
+						$("#timetext").text(stt);
+						if (data.status == 'true') {
+							if(prods==null){
+								prods = data.products;
+							}
+							initializeClassSelection(data);
+						} else{
+							$("#SelectError").text(data.msg);
+						}	
 						$( "#scheduleDialog" ).dialog( "open" );
 					},
 					error : function(data) {
+						$("#SelectError").text("System unavailable.");
 						$( "#scheduleDialog" ).dialog( "open" );
-						console.log(JSON.stringfy(data));
 					}
 				});
 			},
@@ -145,8 +238,43 @@ var tempEvent=null;
 			},
 			eventClick: function(event, jsEvent, view) {
 				if(event._id.indexOf("NA_")!=0){
-					$('#calendar').fullCalendar('removeEvents', event._id);
+					$('.ui-dialog-buttonset').find('button:contains("取消上课")').hide();
+			    	$('.ui-dialog-buttonset').find('button:contains("开始上课")').hide();
+					if(event._id.indexOf("Rsv_")==0 ){
+						$('.ui-dialog-buttonset').find('button:contains("取消上课")').show();
+					}else if(event._id.indexOf("Run_")==0){
+						$('.ui-dialog-buttonset').find('button:contains("开始上课")').show();
+						$('.ui-dialog-buttonset').find('button:contains("开始上课")').css("background","#4B824B");
+						$('.ui-dialog-buttonset').find('button:contains("开始上课")').css("color","#FFF");
+						
+					}
+					editEvent=event;	
+			    	$.ajax({
+							type : 'POST',
+							url : 'cls/getClassDetails',
+							data : {
+								startTime : event.start._i
+							},
+							dataType : 'json',
+							success : function(data) {
+								$("#classStartTime").text(event.start._i);
+								if (data.status == 'true') {
+							    	  $("#tch_nick").text(data.tnick);
+							    	  $("#class_type").text(data.typename);
+							    	  $("#class_name").text(data.pname);
+								} else{
+									$("#DetailError").text(data.msg);
+								}	
+								$( "#scheduleDetails" ).dialog( "open" );
+							},
+							error : function(data) {
+								$("#DetailError").text("System unavailable.");
+								$("#scheduleDetails").dialog( "open" );
+							}
+						});
+			    	  
 				}
+					//$('#calendar').fullCalendar('removeEvents', event._id);
 			},
 			dayRender:function( date, cell ) { 
 				$(cell).css('width','80px');
@@ -154,6 +282,65 @@ var tempEvent=null;
 		});
 		
 	});
+	
+	function initializeClassSelection (data){
+		var tchers = data.teachers;
+		if(typeof tchers !='undefined' && tchers.length>0){		
+			$("#tid").empty(); 
+			var currT = "";
+			var count=0;
+			for(var i=0;i<tchers.length;i++){
+				if(currT !=tchers[i].tid && tchers[i].count < 1 ){
+					$("#tid").append("<option value='"+tchers[i].tid+"'> "+tchers[i].tnick+" </option>"); 
+					currT=tchers[i].tid;
+					count++;
+				}
+			}
+			if(count>0){
+				$("#tid").change(function(){
+					  var tid=$("#tid").val();
+					  var ptype="";
+					  $("#ptypeid").empty(); 
+					  for(var i=0;i<tchers.length;i++){
+						  if(tid == tchers[i].tid && ptype != tchers[i].ptypeid ){
+							  ptype = tchers[i].ptypeid;
+							  $("#ptypeid").append("<option value='"+tchers[i].ptypeid+"'> "+tchers[i].ptypename+" </option>"); 
+						  }
+					  }
+					  $("#ptypeid").change();
+				});
+				if(count ==1){
+					$("#tid").change();
+				}
+			}else{
+				$("#tid").append("<option value=''>-暂时无可选老师-</option>"); 
+			}
+		}
+	}
+	
+	function clearClassSelection(){
+		$("#timetext").text("");
+		$("#SelectError").text("");
+		$("#tid").empty(); 
+		$("#pid").empty(); 
+		$("#ptypeid").empty(); 
+		$("#tid").append("<option value=''>-暂时无可选老师-</option>"); 
+		$("#ptypeid").append("<option value=''>-请选择课程类型-</option>"); 
+		$("#pid").append("<option value=''>-请选择课题-</option>"); 
+	}
+	
+	function generateProd(){
+		 var ptypeid=$("#ptypeid").val();
+		 $("#pid").empty(); 
+		 var pid="";
+		 for(var i=0;i<prods.length;i++){
+			  if(ptypeid == prods[i].ptype && pid != prods[i].pid ){
+				  pid = prods[i].pid;
+				  $("#pid").append("<option value='"+prods[i].pid+"'> "+prods[i].pname+" </option>"); 
+			  }
+		  }
+		 
+	}
 
 </script>
 <style>
@@ -200,11 +387,26 @@ var tempEvent=null;
 	margin:0 !important;
 }
 .fc-event{
-	background-color:#f89600;
+	background-color:#FFA088;
 	color:#FFF !important;
 	border: 0;
 	border-radius:0;
-	font-size:16px;
+	font-size: 14px;
+    text-align: center;
+    padding-top: 2px;
+}
+
+
+.fc-day {
+	background-color:#efe;
+}
+
+.c-unthemed td.fc-today{
+	background:#efe !important;
+}
+.popup p{
+	margin-top:3px;
+	margin-bottom:3px;
 }
 
 </style>
@@ -226,30 +428,37 @@ var tempEvent=null;
 	</div>
 </div>
 
-<div id="scheduleDialog" title="请选择课程内容">
+<div id="scheduleDialog" class="popup" title="请选择课程内容">
 <p class="validateTips"><label >上课时间</label><span id="timetext"></span></p>
   <form>
-    <fieldset>
-      <label for="name">选择教师</label>
-      <select name="teacher" class="text ui-widget-content ui-corner-all">
-      	<option value="300001">Ally Lee</option>
-      	<option value="300002">Thomas Green</option>
-      	<option value="300003">Kevin Moreland</option>
+    <p>
+      <label for="tid">选择教师</label>
+      <select name="tid" id="tid" class="text ui-widget-content ui-corner-all">
+      	<option value="">-暂时无可选老师-</option>
       </select>
-      <label for="grade">选择课程</label>
-      <select name="teacher" class="text ui-widget-content ui-corner-all">
-      	<option value="L1">L1级别套餐</option>
-      	<option value="L2">L2级别套餐</option>
-      	<option value="L3">L3级别套餐</option>
+    </p>
+    <p>
+      <label for="ptypeid">选择课程</label>
+      <select name="ptypeid" id="ptypeid" class="text ui-widget-content ui-corner-all" onchange="javascript:generateProd()">
+      	<option value="">-请选择课程类型-</option>
       </select>
-      <label for="password" >选择课题</label>
-      <select name="teacher" class="text ui-widget-content ui-corner-all">
-      	<option value="L1_A">L1 Practice ABC 课程</option>
-      	<option value="L1_C">L1 Know your name 课程</option>
-      	<option value="L1_C">L1 Lovely Animal 课程</option>
+    </p>
+   <p>
+      <label for="pid" >选择课题</label>
+      <select name="pid" id="pid" class="text ui-widget-content ui-corner-all">
+      	<option value="">-请选择课题-</option>
       </select>
-    </fieldset>
+      </p>
+      <p id="SelectError" style="color:red;padding-top:6px"></p>
   </form>
+</div>
+
+<div id="scheduleDetails" class="popup" title="课堂详情">
+   <p>时间：<span id="classStartTime"></span></p>
+   <p>教师：<span id="tch_nick"></span></p></p>
+   <p>课程：<span id="class_type"></span></p></p>
+   <p>课题：<span id="class_name"></span></p>
+   <p id="DetailError" style="color:red;padding-top:6px"></p>
 </div>
 
 <div class="footer pure-u-1">

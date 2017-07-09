@@ -65,4 +65,6 @@ div.menu ul li a:active
 <script src='<%=request.getContextPath() %>/static/external/js/jquery.cookie.js'></script>
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/static/external/js/jquery.layout.js"></script>
+<script type="text/javascript"
+	src="<%=request.getContextPath()%>/static/js/jquery.reveal.js"></script>
 

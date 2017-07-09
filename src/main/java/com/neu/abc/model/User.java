@@ -30,7 +30,12 @@ public class User {
 		this.prodTypes = prodTypes;
 	}
 	public String getNick() {
-		return nick;
+		if(nick!=null && !"".equals(nick)){
+			return nick;
+		}else{
+			return "User "+this.name;
+		}
+		
 	}
 	public void setNick(String nick) {
 		this.nick = nick;

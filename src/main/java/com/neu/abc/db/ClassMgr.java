@@ -6,6 +6,9 @@ import java.util.List;
 import com.neu.abc.exceptions.DataAccessException;
 import com.neu.abc.model.ClassTimeFrame;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 public class ClassMgr {
 	private DBMgr conMgr;
 
@@ -125,4 +128,120 @@ public class ClassMgr {
 			return false;
 		}
 	}
+
+	public boolean saveStudentTime(String uid, String stm, String tid, String pid)  throws DataAccessException{
+		List<String> params = new ArrayList<String>();
+
+		params.add(tid);
+		params.add(uid);
+		params.add(stm);
+		params.add(pid);
+		
+		return conMgr.executeUpdateSQL(SQLConstant.SAVE_CLS_FOR_STU, params);
+	}
+
+	public JSONArray getTeacherByTime(String uid, String stm) throws DataAccessException {
+		JSONArray arr = new JSONArray();
+		List<String> params = new ArrayList<String>();
+		params.add(uid);
+		params.add(stm);
+		List<List<String>> result = conMgr.executeQuerySQL(SQLConstant.GET_TEACHER_BY_STARTTM, params, 5);		
+		if(result.size()==0){
+			return arr;
+		}else{			
+			for(int i=0;i<result.size();i++){
+				JSONObject obj = new JSONObject();
+				List<String> temp = result.get(i);
+				obj.accumulate("tid", temp.get(0));
+				obj.accumulate("tnick", temp.get(1));
+				obj.accumulate("ptypeid", temp.get(2));
+				obj.accumulate("ptypename", temp.get(3));
+				obj.accumulate("count", temp.get(4));
+				arr.add(obj);
+			}
+			return arr;
+		}		
+		
+	}
+
+	public JSONArray getAllProductsOfUser(String uid)  throws DataAccessException{
+		List<String> params = new ArrayList<String>();
+		params.add(uid);
+		List<List<String>> result = conMgr.executeQuerySQL(SQLConstant.GET_ALL_PRODUCT_BY_USER, params, 3);
+		
+		if(result.size()==0){
+			return new JSONArray();
+		}else{
+			JSONArray arr = new JSONArray();
+			for(int i=0;i<result.size();i++){
+				JSONObject obj = new JSONObject();
+				List<String> temp = result.get(i);
+				obj.accumulate("pid", temp.get(0));
+				obj.accumulate("pname", temp.get(1));
+				obj.accumulate("ptype", temp.get(2));
+				arr.add(obj);
+			}
+			return arr;
+		}		
+		
+	}
+	//Cancel Student's class. 
+	//TODO notification to teacher?
+	public boolean cancelStudentClass(String uid, String stm) throws DataAccessException {
+		List<String> params = new ArrayList<String>();
+		params.add(uid);
+		params.add(stm);
+		return conMgr.executeUpdateSQL(SQLConstant.CANCEL_STU_CLASS, params);
+		
+	}
+
+	public JSONObject getClassDetails(String uid, String stm) throws DataAccessException{
+		List<String> params = new ArrayList<String>();
+		params.add(uid);
+		params.add(stm);
+		List<String> result = conMgr.queryForOneRow(SQLConstant.QUERY_CLASS_DETAILS, params, 6);
+		if(result.size()==0){
+			return new JSONObject();
+		}else{
+			JSONObject obj = new JSONObject();
+			obj.accumulate("tid", result.get(0));
+			obj.accumulate("tnick", result.get(1));
+			obj.accumulate("pid", result.get(2));
+			obj.accumulate("pname", result.get(3));
+			obj.accumulate("typeid", result.get(4));
+			obj.accumulate("typename", result.get(5));
+			return obj;
+		}		
+		
+	}
+	
+	public JSONObject getClassDetailForTeacher(String tid, String stm) throws DataAccessException{
+		List<String> params = new ArrayList<String>();
+		params.add(tid);
+		params.add(stm);
+		List<String> result = conMgr.queryForOneRow(SQLConstant.QUERY_CLASS_DETAILS_TEACHER, params, 7);
+		if(result.size()==0){
+			return new JSONObject();
+		}else{
+			JSONObject obj = new JSONObject();
+			obj.accumulate("sid", result.get(0));
+			obj.accumulate("snick", result.get(1));
+			obj.accumulate("pid", result.get(2));
+			obj.accumulate("pname", result.get(3));
+			obj.accumulate("typeid", result.get(4));
+			obj.accumulate("typename", result.get(5));
+			obj.accumulate("sphoto", result.get(6));
+			return obj;
+		}		
+		
+	}
+	//TODO notification to student?
+	public boolean cancelTeacherClass(String uid, String stm) throws DataAccessException {
+		List<String> params = new ArrayList<String>();
+		params.add(uid);
+		params.add(stm);
+		return conMgr.executeUpdateSQL(SQLConstant.CANCEL_TEACHER_CLASS, params);
+		
+	}
+
 }

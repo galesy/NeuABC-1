@@ -25,6 +25,8 @@ import com.neu.abc.exceptions.DataAccessException;
 import com.neu.abc.model.User;
 import com.neu.abc.utils.Constants;
 
+import net.sf.json.JSONObject;
+
 /**
  * Handles requests for the application home page.
  */
@@ -67,9 +69,10 @@ public class ABCAppController {
 	public String displayLandingPage(HttpServletRequest request, HttpServletResponse response) {
 		User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
 		if("T".equalsIgnoreCase(user.getRole())){
-			if(user.getProdTypes().size()>0){
+			if(user.getProdTypes().size()>-1){//不做判断
 				return "abc.tch.landing";
 			}else{
+				
 				return "abc.tch.calendar1";
 			}
 			
@@ -164,4 +167,31 @@ public class ABCAppController {
 	public String bookClass(HttpServletRequest request, HttpServletResponse response) {
 		return "abc.stu.bookclass";
 	}
+	
+	
+	//学生的英语水平
+		@RequestMapping(value = "/updateEnglishLev", method = RequestMethod.POST)
+		public String updateEnglishLev(HttpServletRequest request, HttpServletResponse response) { 
+			User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
+			String uid=user.getId();
+			String grade = request.getParameter("grade");
+			String eng_lev = request.getParameter("engLev");
+			JSONObject obj = new JSONObject();
+			try{
+				usermgr.getClassDetails(uid,grade, eng_lev);
+			}catch (DataAccessException e){
+				logger.error("Error while upgrade English level:" ,e);
+				obj.accumulate("status", "false");
+				return "ajax";
+			} 
+			obj.accumulate("status", "true");
+			request.setAttribute("msg", obj.toString());
+			return "ajax";
+		}
+		//老师的课程详细信息
+		@RequestMapping(value = "/getClassDetailt", method = RequestMethod.POST)
+		public String getClassDetailt(HttpServletRequest request, HttpServletResponse response) throws DataAccessException { 
+			
+			return "ajax";
+		}
 }

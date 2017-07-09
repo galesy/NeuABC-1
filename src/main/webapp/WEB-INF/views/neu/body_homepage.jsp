@@ -18,7 +18,11 @@
 				dataType : 'json',
 				success : function(data) {
 					if (data.status == 'Success') {
-						location.href = "landing";
+						//location.href = "landing";
+						$("#myModal").css("top",$(".ui-layout-center").scrollTop()+20);
+						$("#myModal").reveal({'data-animation':'none','callBack':function(){
+							location.href = "landing";
+						}});
 					} else {
 						$("#top-error").show();
 					}
@@ -33,6 +37,10 @@
 		var exp = new RegExp(params);
 		return exp.test(value);
 	}, "格式错误");
+	$.validator.addMethod('agreed', function(value, element, params) { 
+		return $("#agree").is(':checked');
+	},"请接受协议内容"); 
+	
 	$().ready(function() {
 		$("#username").keydown(function(){
 			$("#top-error").hide();
@@ -70,6 +78,9 @@
 					required : true,
 					email : true
 				},
+				agree : {
+					agreed : true
+				}
 			},
 			messages : {
 				phone : {
@@ -86,6 +97,9 @@
 				email : {
 					required : "请输入邮箱",
 					email : "您输入的邮箱格式不符合规范"
+				},
+				agree :{
+					required: "请接受协议内容"
 				}
 			},
 			errorElement : "em",
@@ -96,6 +110,44 @@
 		});
 
 	});
+	
+	function additionalInfoSubmit(){
+		$.ajax({
+			type : 'POST',
+			//contentType : 'application/json',  
+			url : 'updateEnglishLev',
+			data : {
+				grade : $('a[id^="grade_"][class="sel"]').length==0?"":($('a[id^="grade_"][class="sel"]')[0].id),
+				engLev : $('a[id^="lev_"][class="sel"]').length==0?"":($('a[id^="lev_"][class="sel"]')[0].id)
+			},
+			dataType : 'json',
+			success : function(data) {
+				location.href = "landing";
+			},
+			error : function(data) {
+				location.href = "landing";
+			}
+		});
+	}
+	function stuGradeClick(obj){
+		$('a[id^="grade_"]').removeClass('sel');
+		$(obj).addClass('sel');
+	}
+	function engLevelClick(obj){
+		$('a[id^="lev_"]').removeClass('sel');
+		$(obj).addClass('sel');
+	}
+	function stuTypeClick(obj){
+		$('a[id^="type_"]').removeClass('sel');
+		$(obj).addClass('sel');
+		if(obj.id=="type_1"){
+			$("#gradediv_1").show();
+			$("#gradediv_2").hide();
+		}else{
+			$("#gradediv_2").show();
+			$("#gradediv_1").hide();
+		}
+	}
 </script>
 <div
 	class="home_main_content_wrapper home_s_main_content_wrapper pure-u-1  pure-g">
@@ -136,17 +188,20 @@
 					<div class="pure-control-group">
 						<label for="smscode">手机验证码</label> <input id="smscode"
 							name="smscode" type="text" placeholder="请输入手机验证码"> <a
-							href="#" class="phone-code">发送验证码</a> <span
-							class="pure-form-message-inline"></span>
+							href="#" class="phone-code">发送验证码</a> 
+							<span	class="pure-form-message-inline"></span>
 					</div>
-					<div class="pure-controls">
-						<label for="cb" class="pure-checkbox"> <input id="agree"
+					<div class="pure-control-group" style="margin-top:-24px">
+					<label for="agree" > </label>
+						<input id="agree"
 							name="agree" type="checkbox" value="Y">我已阅读并同意 <a
 							href="#">《NeuABC协议》</a>
-						</label> <a href="#" class="big-link" data-reveal-id="myModal">
+						<span
+							class="pure-form-message-inline" style="margin-top:-24px" ></span>
+					</div>
+					<div class="pure-controls" style="margin-top:-30px">
 							<button type="submit"
 								class="pure-button pure-button-primary sign_button">注册</button>
-						</a>
 					</div>
 				</form>
 			</div>
@@ -257,4 +312,46 @@
 <div class="footer pure-u-1">
 	<p class="copyright">Copyright &copy; 2017 NP Technology. All
 		rights reserved.</p>
+</div>
+
+<div id="myModal" class="reveal-modal">
+<a class="big-link" style="display:none" id="popupTrigger" data-reveal-id="myModal"></a>
+    <p>请您填写以下信息，可以获得更准确的服务。</p>
+    <div class="student_identity">
+    	<div class="identity_row">
+            <div class="title">学员身份：</div>
+            <div class="con">
+                <a  id="type_1" onclick="stuTypeClick(this)">小学生</a>
+                <a  id="type_2" onclick="stuTypeClick(this)">幼儿</a>
+            </div>
+        </div>
+    	<div class="identity_row" id="gradediv_1" style="display:none">
+            <div class="title">年级：</div>
+            <div class="con">
+                <a id="grade_11" onclick="stuGradeClick(this)" >一年级</a>
+                <a id="grade_12" onclick="stuGradeClick(this)" >二年级</a>
+                <a id="grade_13" onclick="stuGradeClick(this)" >三年级</a>
+                <a id="grade_14" onclick="stuGradeClick(this)" >四年级</a>
+                <a id="grade_15" onclick="stuGradeClick(this)" >五年级</a>
+                <a id="grade_16" onclick="stuGradeClick(this)" >六年级</a>
+            </div>
+        </div>
+    	<div class="identity_row" id="gradediv_2" style="display:none">
+            <div class="title">年级：</div>
+            <div class="con">
+                <a id="grade_21" onclick="stuGradeClick(this)" >幼稚园</a>
+                <a id="grade_22" onclick="stuGradeClick(this)" >学前班</a>
+            </div>
+        </div>
+    	<div class="identity_row">
+            <div class="title">英语水平：</div>
+            <div class="con">
+                <a id="lev_1" onclick="engLevelClick(this)">没学过英语</a>
+                <a id="lev_2" onclick="engLevelClick(this)">会说简单单词</a>
+                <a id="lev_3" onclick="engLevelClick(this)">能说完整句子</a>
+                <a id="lev_4" onclick="engLevelClick(this)">能流利交流</a>
+            </div>
+        </div>
+    </div>
+    <a  class="btn" onclick="additionalInfoSubmit();" >确定</a>
 </div>

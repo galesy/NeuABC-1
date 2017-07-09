@@ -4,9 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +23,7 @@ import com.neu.abc.model.User;
 import com.neu.abc.utils.Constants;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 
 @Controller
@@ -34,6 +33,12 @@ public class TrainingClassController {
 	@Inject
 	private ClassMgr classmgr;
 	
+	private String RESERVED = "#4B824B";
+	private String RUNING_NOW = "#BF3EFF";
+	private String FINISHED = "#6495ED";
+	private String AVAILABLE = "#00C5CD" ;
+	
+	//获取学生可以选的时段
 	@RequestMapping(value = "/getTimeFrame", method = RequestMethod.GET)
 	public String doStudent(HttpServletRequest request, HttpServletResponse response) throws DataAccessException { 
 		User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
@@ -54,50 +59,69 @@ public class TrainingClassController {
 		farFuture.set(Calendar.DATE, calendar.get(Calendar.DATE) + 15);  
 		String endPoint = formatter.format(farFuture.getTime() );
 		
-		List<Map<String, String>> events = new ArrayList<Map<String, String>>();
-		
+		JSONArray arr = new JSONArray();
+		List<ClassTimeFrame> futureClasses = new ArrayList<ClassTimeFrame>();
 		
 		//先遍历用户已注册的课程，将StartPoint遍历到距离现在最近的一次上课结束时间
 		for(int c=0;c<clses.size();c++){
 			ClassTimeFrame cls = clses.get(c);
 			if(nowPoint.compareTo(cls.getStartTime())<0){ //展现未学习过的课程
-				events.add(createTimeEvent("Booked_"+c, cls.getStartTime(), cls.getEndTime(),"#4FF"));
+				arr.add(createNAFrame("Rsv_"+c, cls.getStartTime(), cls.getEndTime(),"已预约",RESERVED));
+				futureClasses.add(cls);
 			}else if(nowPoint.compareTo(cls.getEndTime())>0){ //展现已学习的内容
-				events.add(createTimeEvent("NA_b"+c, startPoint, cls.getStartTime(),"#ff9f89"));
+				arr.add(createNAFrame("NA_"+c,startPoint,cls.getStartTime(),"")  );
+				arr.add(createNAFrame("Fin_"+c, cls.getStartTime(), cls.getEndTime(),"已结束",FINISHED));				
 				startPoint=cls.getEndTime();				
 			}else{//正在上课
-				events.add(createTimeEvent("NA_b"+c, startPoint, cls.getStartTime(),"#ff9f89"));				
-				events.add(createTimeEvent("Now_"+c, cls.getStartTime(), cls.getEndTime(),"#FF4"));
+				arr.add(createNAFrame("NA_"+c, startPoint, cls.getStartTime(),""));				
+				arr.add(createNAFrame("Run_"+c, cls.getStartTime(), cls.getEndTime(),"正在上课",RUNING_NOW));
 				startPoint=cls.getEndTime();
 			}			
 		}		
-		//绘制不可选区域
-		for (int i=0;i<list.size();i++){
+		//绘制不可选区域，大于现在时间
+		int f = 0;
+		for (int i=0;i<list.size();){
 			ClassTimeFrame ctf = list.get(i);
-			if(startPoint.compareTo(ctf.getStartTime())<0){//发现有空白区域
-				events.add(createTimeEvent("NA_a"+i, startPoint, ctf.getStartTime(),"#ff9f89"));	
+			if(startPoint.compareTo(ctf.getStartTime())<0){//发现有空白区域(无法注册的区域)
+				//空白区有已经注册的课				
+				if(f< futureClasses.size() && futureClasses.get(f).getStartTime().compareTo(ctf.getStartTime())<=0){
+					ClassTimeFrame fcls = futureClasses.get(f);
+					arr.add(createNAFrame("NA_f"+i, startPoint, fcls.getStartTime(),""));
+					startPoint = fcls.getEndTime();
+					f++;
+					continue;
+				}
+				arr.add(createNAFrame("NA_f"+i, startPoint, ctf.getStartTime(),""));	
 				startPoint = ctf.getEndTime();
-			}else if(endPoint.compareTo(ctf.getStartTime())<=0){	
+			}else if(startPoint.compareTo(ctf.getStartTime())>=0){	
+				if(f< futureClasses.size() && futureClasses.get(f).getEndTime().compareTo(ctf.getEndTime())<=0){
+					f++;
+					continue;
+				}
 				startPoint = ctf.getEndTime();
 			}
+			i++;
 		}
-		events.add(createTimeEvent("NA_a", startPoint, endPoint,"#ff9f89"));
 		
-		JSONObject obj = new JSONObject();
-		obj.accumulate("list", events);
-		request.setAttribute("msg", obj.toString());
-		logger.info(obj.toString());
+		for(;f<futureClasses.size();f++){
+			arr.add(createNAFrame("NA_a", startPoint, futureClasses.get(f).getStartTime(),""));
+			startPoint = futureClasses.get(f).getEndTime();
+		}
+		arr.add(createNAFrame("NA_a", startPoint, endPoint,""));
+		cleanNullItemInJSONArray(arr);
+		request.setAttribute("msg", arr.toString());
+		logger.info(arr.toString());
 		return "ajax";
 	}
 	
-	private Map<String, String> createTimeEvent(String id, String start, String end, String color){
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("id", id);
-		map.put("start", start);
-		map.put("end", end);
-		map.put("color", color);
-		return map;
-	}	
+	private void cleanNullItemInJSONArray(JSONArray arr){
+		for(Object obj:arr){
+			if(obj instanceof JSONNull){
+				arr.remove(obj);
+			}
+		}
+	}
+
 	
 	@RequestMapping(value = "/tchConfirmDate", method = RequestMethod.POST)
 	public String tchConfirmDate(HttpServletRequest request, HttpServletResponse response) throws DataAccessException { 
@@ -169,15 +193,18 @@ public class TrainingClassController {
 				}
 				obj.accumulate("id", "Fin_"+i);
 				obj.accumulate("txt", "Finished");
+				obj.accumulate("color", FINISHED);
 				arr.add(createNAFrame("NA_"+i,startPoint,list.get(i).getStartTime(),"")  );
 				startPoint = list.get(i).getEndTime();
 			}else if(nowPoint.compareTo(list.get(i).getStartTime())<0){//还未开始
 				if(!"0".equals(list.get(i).getNoOfStu())){//不展示已经过去的时间，但没人注册
 					obj.accumulate("id", "Rsv_"+i);
 					obj.accumulate("txt", "Reserved");
+					obj.accumulate("color", RESERVED);
 				}else{
 					obj.accumulate("id", "Ava_"+i);
 					obj.accumulate("txt", "Available");
+					obj.accumulate("color", AVAILABLE);
 				}				
 			}else{//正在上课
 				if("0".equals(list.get(i).getNoOfStu())){//不展示当前没注册人数的时间
@@ -185,6 +212,7 @@ public class TrainingClassController {
 				}
 				obj.accumulate("id", "Run_"+i);
 				obj.accumulate("txt", "Running Now");
+				obj.accumulate("color", RUNING_NOW);
 				arr.add(createNAFrame("NA_"+i,startPoint,list.get(i).getStartTime(),"")  );
 				startPoint = list.get(i).getEndTime();
 			}
@@ -197,19 +225,29 @@ public class TrainingClassController {
 		if(startPoint.compareTo(lastNA)<0){
 			arr.add(createNAFrame("NA_N",startPoint,lastNA,"")  );
 		}		
-		
+		cleanNullItemInJSONArray(arr);
 		request.setAttribute("msg", arr.toString());
 		return "ajax";
 	}
 	
 	private JSONObject createNAFrame(String id, String stt, String ett, String txt){
+		return createNAFrame(id, stt,ett, txt, null);
+	}
+	
+	private JSONObject createNAFrame(String id, String stt, String ett, String txt, String color){
+		if(stt.equals(ett)){
+			return null;
+		}
 		JSONObject obj = new JSONObject();
 		obj.accumulate("id", id);
-		if(txt!=null && !"".equals(txt)){
-			obj.accumulate("txt", "Running Now");			
+		if(txt!=null ){
+			obj.accumulate("txt", txt);			
 		}
 		obj.accumulate("start", stt);
 		obj.accumulate("end", ett);
+		if(color !=null){
+			obj.accumulate("color", color);
+		}
 		return obj;
 		
 	}
@@ -242,22 +280,165 @@ public class TrainingClassController {
 		return "ajax";
 	}
 	
-	@RequestMapping(value = "/preSelectEvent", method = RequestMethod.GET)
+	@RequestMapping(value = "/preSelectEvent", method = RequestMethod.POST)
 	public String preSelectEvent(HttpServletRequest request, HttpServletResponse response) throws DataAccessException { 
 		User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
+		JSONObject obj = new JSONObject();
+		String uid=user.getId();
+		
+		String stm = request.getParameter("startTime");
+		
+		JSONArray tchers = classmgr.getTeacherByTime(uid, stm);
+		if(tchers.size()==0){
+			obj.accumulate("status", "false");
+			obj.accumulate("msg", "当前老师已经排满课程,请选择其他老师");
+			request.setAttribute("msg", obj.toString());
+			return "ajax";
+		}
+		obj.accumulate("status", "true");
+		obj.accumulate("teachers", tchers.toString());	
+		
+		String getP = request.getParameter("getProd");
+		if("Y".equalsIgnoreCase(getP)){
+			JSONArray prods = classmgr.getAllProductsOfUser(uid);
+			obj.accumulate("products", prods.toString());
+		}
+		
+		request.setAttribute("msg", obj.toString());
+				
+		return "ajax";
+	}
+	
+	@RequestMapping(value = "/reserveStudentClass", method = RequestMethod.POST)
+	public String reserveStudentClass(HttpServletRequest request, HttpServletResponse response) throws DataAccessException { 
+		User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
+		JSONObject obj = new JSONObject();
+		
 		String uid=user.getId();
 		String stm = request.getParameter("startTime");
-		JSONObject obj = new JSONObject();
+		String tid=  request.getParameter("tid");
+		String pid = request.getParameter("pid");
 		if(stm==null||"".equals(stm)){
 			obj.accumulate("status", "false");
 			obj.accumulate("msg", "请选择一个时间");
 			request.setAttribute("msg", obj.toString());
 			return "ajax";
-		}
+		}	
+		//ToDo:校验是否该时段该老师是否可以预订,因为可能在同一时间其他人也订了该老师.
 		
-		
+		boolean results = classmgr.saveStudentTime(uid, stm, tid, pid);
+					
+		if(!results){
+			obj.accumulate("status", "false");
+			obj.accumulate("msg", "系统忙，请稍候再试！");
+			request.setAttribute("msg", obj.toString());
+			return "ajax";
+		}		
+		obj.accumulate("status", "true");
+		request.setAttribute("msg", obj.toString());
 		return "ajax";
 	}
 	
+	@RequestMapping(value = "/cancelStudentClass", method = RequestMethod.POST)
+	public String cancelStudentClass(HttpServletRequest request, HttpServletResponse response) throws DataAccessException { 
+		User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
+		String uid=user.getId();
+		String stm = request.getParameter("startTime");
+		String etm = request.getParameter("endTime");
+		JSONObject obj = new JSONObject();
+		//没有传时间过来
+		if(stm==null||"".equals(stm)){
+			obj.accumulate("status", "false");
+			obj.accumulate("msg", "系统繁忙,请稍候再试.");
+			request.setAttribute("msg", obj.toString());
+			return "ajax";
+		}
+		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");  
+		Date now = new Date();
+		Calendar curr = Calendar.getInstance(); 
+		curr.setTime(now);
+		
+		if(formatter.format(curr.getTime()).compareTo(stm)>=0){
+			obj.accumulate("status", "false");
+			obj.accumulate("msg", "课程已经开始,无法取消");
+			request.setAttribute("msg", obj.toString());
+			return "ajax";
+		}
+		
+		classmgr.cancelStudentClass(uid, stm);
+		obj.accumulate("status", "true");
+		request.setAttribute("msg", obj.toString());
+		return "ajax";
+	}
 	
+	//学生的课程详细信息
+	@RequestMapping(value = "/getClassDetails", method = RequestMethod.POST)
+	public String getClassDetails(HttpServletRequest request, HttpServletResponse response) throws DataAccessException { 
+		User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
+		String uid=user.getId();
+		String stm = request.getParameter("startTime");
+		JSONObject obj = new JSONObject();
+		//没有传时间过来
+		if(stm==null||"".equals(stm)){
+			obj.accumulate("status", "false");
+			obj.accumulate("msg", "系统繁忙,请刷新页面后再次尝试.");
+			request.setAttribute("msg", obj.toString());
+			return "ajax";
+		}
+		obj = classmgr.getClassDetails(uid,stm);
+		obj.accumulate("status", "true");
+		request.setAttribute("msg", obj.toString());
+		return "ajax";
+	}
+	//老师的课程详细信息
+	@RequestMapping(value = "/getClassDetailt", method = RequestMethod.POST)
+	public String getClassDetailt(HttpServletRequest request, HttpServletResponse response) throws DataAccessException { 
+		User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
+		String uid=user.getId();
+		String stm = request.getParameter("startTime");
+		JSONObject obj = new JSONObject();
+		//没有传时间过来
+		if(stm==null||"".equals(stm)){
+			obj.accumulate("status", "false");
+			obj.accumulate("msg", "系统繁忙,请刷新页面后再次尝试.");
+			request.setAttribute("msg", obj.toString());
+			return "ajax";
+		}
+		obj = classmgr.getClassDetailForTeacher(uid,stm);
+		obj.accumulate("status", "true");
+		request.setAttribute("msg", obj.toString());
+		return "ajax";
+	}
+	
+	@RequestMapping(value = "/cancelTeacherClass", method = RequestMethod.POST)
+	public String cancelTeacherClass(HttpServletRequest request, HttpServletResponse response) throws DataAccessException { 
+		User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
+		String uid=user.getId();
+		String stm = request.getParameter("startTime");
+		String etm = request.getParameter("endTime");
+		JSONObject obj = new JSONObject();
+		//没有传时间过来
+		if(stm==null||"".equals(stm)){
+			obj.accumulate("status", "false");
+			obj.accumulate("msg", "System Unavailable.");
+			request.setAttribute("msg", obj.toString());
+			return "ajax";
+		}
+		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");  
+		Date now = new Date();
+		Calendar curr = Calendar.getInstance(); 
+		curr.setTime(now);
+		
+		if(formatter.format(curr.getTime()).compareTo(stm)>=0){
+			obj.accumulate("status", "false");
+			obj.accumulate("msg", "You cannot cancel a class which had already started");
+			request.setAttribute("msg", obj.toString());
+			return "ajax";
+		}
+		
+		classmgr.cancelTeacherClass(uid, stm);
+		obj.accumulate("status", "true");
+		request.setAttribute("msg", obj.toString());
+		return "ajax";
+	}
 }

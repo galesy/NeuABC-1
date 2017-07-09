@@ -9,6 +9,8 @@ import com.neu.abc.exceptions.DataAccessException;
 import com.neu.abc.model.User;
 import com.neu.abc.utils.PwdUtil;
 
+import net.sf.json.JSONObject;
+
 public class UserMgr {
 	private DBMgr conMgr;
 
@@ -96,6 +98,26 @@ public class UserMgr {
 		paramList.add( user.getId() );		
 		return conMgr.executeUpdateSQL(SQLConstant.UPDATE_USER, paramList);
 	}
+
+	public boolean getClassDetails(String uid, String grade, String eng_lev) throws DataAccessException {
+		JSONObject obj = new JSONObject();
+		obj.accumulate("grade", grade);
+		obj.accumulate("engLev", eng_lev);
+		List<String> paramList = new ArrayList<String>();		
+		paramList.add( obj.toString());
+		paramList.add( uid);
+		return conMgr.executeUpdateSQL(SQLConstant.UPDATE_USER_ENG_LEV, paramList);
+	}
 	
+	
+	public boolean addDefaultProduct(String uid , String role) throws DataAccessException {
+		List<String> paramList = new ArrayList<String>();	
+		paramList.add( uid);
+		if("S".equalsIgnoreCase(role)){
+			return conMgr.executeUpdateSQL(SQLConstant.ADD_DEFAULT_PRODUCT_S, paramList);
+		}else{
+			return conMgr.executeUpdateSQL(SQLConstant.ADD_DEFAULT_PRODUCT_T, paramList);
+		}
+	}
 	
 }

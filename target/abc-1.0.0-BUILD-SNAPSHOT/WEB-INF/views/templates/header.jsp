@@ -1,4 +1,4 @@
-<meta http-equiv="Content-Type" content="text/html; charset=GBK"> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0 maximum-scale=1.0, user-scalable=1;" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <meta name="format-detection" content="telephone=no" />
@@ -56,7 +56,7 @@ div.menu ul li a:active
 </style>
 <link href='<%=request.getContextPath() %>/static/external/css/fullcalendar.min.css' rel='stylesheet' />
 <link href='<%=request.getContextPath() %>/static/external/css/jquery-ui.css' rel='stylesheet' />
-<link href='<%=request.getContextPath() %>/static/external/css/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+<link href='<%=request.getContextPath() %>/static/external/css/fullcalendar.css' rel='stylesheet' media='print' />
 <script src='<%=request.getContextPath() %>/static/external/js/moment.min.js'></script>
 <script src='<%=request.getContextPath() %>/static/external/js/jquery.js'></script>
 <script src='<%=request.getContextPath() %>/static/external/js/jquery-ui.js'></script>
@@ -65,4 +65,6 @@ div.menu ul li a:active
 <script src='<%=request.getContextPath() %>/static/external/js/jquery.cookie.js'></script>
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/static/external/js/jquery.layout.js"></script>
+<script type="text/javascript"
+	src="<%=request.getContextPath()%>/static/js/jquery.reveal.js"></script>
 

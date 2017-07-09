@@ -19,8 +19,10 @@
 							$.cookie("rmbUser", "true", { expires: 30 });
 							$.cookie("username", $("#username").val(), { expires: 30 }); 
 							$.cookie("password", $("#password").val(), { expires: 30 }); 
-						}						
-						location.href = "/abc/landing";
+						}else{
+							$.cookie("rmbUser", "false", { expires: 30 });
+						}				
+						location.href = "/landing";
 					} else {
 						$("#top-error").show();
 					}
@@ -85,7 +87,7 @@
         <div class="signin_main_content">
             <div class="sign_link">
                 <span>没有账户？ </span>
-                <a href="signup-s.html">注册</a>
+                <a href="stu">注册</a>
             </div>
             <form name="loginForm" id="loginForm" class="pure-form pure-form-aligned">
                 <div class="pure-control-group">
@@ -111,5 +113,5 @@
     </div>
 </div>
 <div class="footer pure-u-1">
-	<p class="copyright">Copyright © 2017 NP Technology. All rights reserved. </p>
+	<p class="copyright">Copyright &copy; 2017 NP Technology. All rights reserved. </p>
 </div>

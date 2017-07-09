@@ -14,7 +14,7 @@
 </style> 
 <div class="signin_top_nav_wrapper pure-u-1">
 	<div class="top">
-	<span class="home_t_nav_logo pure-u-1-4"><a href="<%=request.getContextPath() %>" class="home_t_nav_logo_img"></a></span>
+	<span class="home_t_nav_logo pure-u-1-4"><a href="/" class="home_t_nav_logo_img"></a></span>
     <span class="signin_top_nav_tel">咨询热线：86-411-84835864</span>  
     </div>
 </div>
