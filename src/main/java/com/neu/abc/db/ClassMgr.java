@@ -162,7 +162,7 @@ public class ClassMgr {
 				JSONObject obj = new JSONObject();
 				List<String> temp = result.get(i);
 				obj.accumulate("tid", temp.get(0));
-				obj.accumulate("tnick", temp.get(1));
+				obj.accumulate("tnick", temp.get(1)==null?("User "+temp.get(0)):temp.get(1));
 				obj.accumulate("ptypeid", temp.get(2));
 				obj.accumulate("ptypename", temp.get(3));
 				obj.accumulate("count", temp.get(4));

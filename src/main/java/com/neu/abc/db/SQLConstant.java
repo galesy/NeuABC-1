@@ -28,12 +28,14 @@ public class SQLConstant {
 
 	public static String TBD = "";
 	
-	public static String ALL_TEACHER_AVAILABLE_TM="SELECT CLS_START, CLS_END FROM NEU_ABC_TCH_TM A, NEU_ABC_USER B "
-			+ "WHERE A.U_ID = B.U_ID AND B.U_ROLE ='T' AND  A.U_ID IN "
-			+" ( SELECT U_ID FROM NEU.NEU_ABC_TCH_PROD_TYPE WHERE P_TYPE IN  "
-			+ "  ( SELECT P_TYPE FROM NEU.NEU_ABC_STU_PROD_TYPE "
-			+ " WHERE U_ID=?"
-			+ " ) ) and  cls_start > DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') order by CLS_START " ;//大于现在的时间
+	public static String ALL_TEACHER_AVAILABLE_TM=
+			" SELECT A.CLS_START, A.CLS_END FROM neu_abc_user B , ("
+			+ " SELECT A.U_ID,A.CLS_START, A.CLS_END, COUNT(T.U_S_ID) CT FROM NEU_ABC_TCH_TM A LEFT JOIN NEU_ABC_TCH_STU_TM T"
+			+ " ON A.U_ID = T.U_T_ID AND A.CLS_START = T.CLS_START "
+			+ " WHERE    A.U_ID IN  ( "
+			+ " SELECT U_ID FROM NEU.NEU_ABC_TCH_PROD_TYPE WHERE P_TYPE IN    ( SELECT P_TYPE FROM NEU.NEU_ABC_STU_PROD_TYPE  WHERE U_ID = ? ) )  "
+			+ " and A.cls_start > DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') GROUP BY A.U_ID,A.CLS_START, A.CLS_END ) A  "
+			+ " WHERE A.U_ID = B.U_ID AND B.U_ROLE = 'T' AND A.CT = 0 order by CLS_START  " ;//大于现在的时间
 			
 	public static String TEACHER_CLASS_AVAILABLE
 			= " SELECT A.U_ID, A.U_NICK, C.P_TYPE_NAME " //返回老师的 ID，名称，以及供选择的课
