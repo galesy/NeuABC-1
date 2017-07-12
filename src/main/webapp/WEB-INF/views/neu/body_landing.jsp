@@ -106,7 +106,7 @@ var editEvent=null;
 											end: tempEvent._end,
 											color:"#4B824B"
 										};
-									$('#calendar').fullCalendar('renderEvent', eventData, true); 
+									$('#calendar').fullCalendar('renderEvent', eventData, false); 
 									$("#scheduleDialog").dialog( "close" );
 								} 
 							}else{
@@ -178,7 +178,7 @@ var editEvent=null;
 							start: start,
 							end: end
 						};
-					$('#calendar').fullCalendar('renderEvent', eventData, true); 
+					$('#calendar').fullCalendar('renderEvent', eventData, false); 
 				}
 				$('#calendar').fullCalendar('unselect');
 			},
@@ -193,7 +193,7 @@ var editEvent=null;
 				if(tempEvent !=null){
 					$('#calendar').fullCalendar('removeEvents', tempEvent._id);
 				}
-				$('#calendar').fullCalendar('renderEvent', eventData, true); 
+				$('#calendar').fullCalendar('renderEvent', eventData, false); 
 				$.ajax({
 					type : 'POST',
 					//contentType : 'application/json',  

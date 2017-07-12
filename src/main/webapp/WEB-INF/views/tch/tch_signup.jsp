@@ -16,7 +16,7 @@ $.validator.setDefaults({
 			dataType : 'json',
 			success : function(data) {
 				if (data.status == 'Success') {
-					location.href = "landing";
+					location.href = "prodintro";
 				} else {
 					$("#top-error").show();
 				}

@@ -101,7 +101,7 @@ var editEvent=null;
 											end: tempEvent._end,
 											color: "#00C5CD"
 										};
-									$('#calendar').fullCalendar('renderEvent', eventData, true); 
+									$('#calendar').fullCalendar('renderEvent', eventData, false); 
 									$("#scheduleDialog").dialog( "close" );
 								} 
 							}else{
@@ -241,7 +241,7 @@ var editEvent=null;
 				if(tempEvent !=null){
 					$('#calendar').fullCalendar('removeEvents', tempEvent._id);
 				}
-				$('#calendar').fullCalendar('renderEvent', eventData, true); 
+				$('#calendar').fullCalendar('renderEvent', eventData, false); 
 				$("#TimeConfirmS").text( stt );
 				$("#TimeConfirmE").text( ett );
 				$( "#scheduleDialog" ).dialog( "open" );
@@ -300,7 +300,6 @@ var editEvent=null;
 				$(cell).css('width','80px');
 			}
 		});
-		
 	});
 
 </script>
@@ -365,29 +364,16 @@ var editEvent=null;
 </style>
 
 <div class="calendar_main_content_wrapper pure-u-1">    
-    <div class="calendar_bg" >
-    	<div class="s_calendar_box">
-			<div id='calendar'> </div>
-		</div>
-	</div>
+   
 	<div class="box_bg" >
         <div class="calendar_main_box">
             <div class="calendar_title">Tips:</div>
             <p class="line"></p>
             <p class="calendar_tips_class"><span class="bold">Your curriculum:</span><span class="orange">the next time is 2016-06-25 08:00,</span>Please enter the classroom on time.</p>
             <p class="calendar_tips_class"><span class="bold">The last class time: </span>2016-06-10 07:00</p>
-            <p class="calendar_tips_class"><span class="bold">The last class time: </span>2016-06-10 07:00</p>
             <p class="calendar_tips_class"><span class="bold">The last Class: </span>Family Matters / L1.Vernon's Questions</p>
             <p class="calendar_tips_class"><span class="bold">Students: </span></p>
             <div class="calendar_tips_student">
-                <div class="calendar_tips_img">
-                    <img src="<%=request.getContextPath()%>/static/neu/images/img1.png" />
-                    <p class="img_name">Abby</p>
-                </div>
-                <div class="calendar_tips_img">
-                    <img src="<%=request.getContextPath()%>/static/neu/images/img1.png" />
-                    <p class="img_name">Abby</p>
-                </div>
                 <div class="calendar_tips_img">
                     <img src="<%=request.getContextPath()%>/static/neu/images/img1.png" />
                     <p class="img_name">Abby</p>
@@ -405,6 +391,11 @@ var editEvent=null;
             <a href="#" class="schedule_button">Enter the classroom</a>
         </div>
     </div>
+     <div class="calendar_bg" >
+    	<div class="s_calendar_box">
+			<div id='calendar'> </div>
+		</div>
+	</div>
 </div>
 
 <div id="scheduleDialog" title="Time Confirmation">
