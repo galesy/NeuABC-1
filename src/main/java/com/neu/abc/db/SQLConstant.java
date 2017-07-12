@@ -112,4 +112,8 @@ public class SQLConstant {
 	public static String ADD_DEFAULT_PRODUCT_S = "INSERT INTO neu_abc_stu_prod_type  (U_ID,P_TYPE) VALUES (?,11);" ;
 	
 	public static String ADD_DEFAULT_PRODUCT_T = "INSERT INTO neu_abc_tch_prod_type  (U_ID,P_TYPE) VALUES (?,11);" ;
+	
+	public static String QUERY_CLASS_ROOM = "select room_id, room_name from neu_abc_cls_room where t_id = ? and  cls_start = ? "; 
+	
+	public static String CREATE_CLASS_ROOM = "INSERT INTO neu_abc_cls_room (t_id,  room_id, room_name,cls_start)VALUES(?,?,?,?) " ;
 }

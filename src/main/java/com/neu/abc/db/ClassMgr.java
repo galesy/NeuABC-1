@@ -1,17 +1,26 @@
 package com.neu.abc.db;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.duobeiyun.DuobeiYunClient;
+import com.neu.abc.controller.TrainingClassController;
 import com.neu.abc.exceptions.DataAccessException;
 import com.neu.abc.model.ClassTimeFrame;
+import com.neu.abc.model.User;
+import com.neu.abc.utils.DuoBeiUtil;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class ClassMgr {
 	private DBMgr conMgr;
-
+	private static final Logger logger = LoggerFactory.getLogger(ClassMgr.class);
 	public void setConMgr(DBMgr conMgr) {
 		this.conMgr = conMgr;
 	}
@@ -242,6 +251,97 @@ public class ClassMgr {
 		params.add(stm);
 		return conMgr.executeUpdateSQL(SQLConstant.CANCEL_TEACHER_CLASS, params);
 		
+	}
+
+	public JSONObject teacherStartClass(User user, String stm) {
+		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");  
+		List<String> params = new ArrayList<String>();
+		params.add(user.getId());
+		params.add(stm);
+		// TODO Auto-generated method stub
+		JSONObject obj = new JSONObject();
+		String roomid=null;
+		String roomname=null;
+		try{
+			List<String> existingRoom = conMgr.queryForOneRow(SQLConstant.QUERY_CLASS_ROOM, params, 2);
+			//check existing room
+			if(existingRoom.size()>0){
+				roomid=existingRoom.get(0);
+			}else{
+				//create new room
+				String response = DuoBeiUtil.createRoom(user.getNick()+"'s class", new Date(), 1);
+				logger.info("Create Class Response: "+response);
+				JSONObject cls = JSONObject.fromObject(response);
+				if(cls.getBoolean("success")){
+					roomid = cls.getJSONObject("room").getString("roomId");
+					roomname =cls.getJSONObject("room").getString("title");
+					List<String> fff = new ArrayList<String>();
+					fff.add(user.getId());
+					fff.add(roomid);
+					fff.add(roomname);
+					fff.add(stm);
+					conMgr.executeUpdateSQL(SQLConstant.CREATE_CLASS_ROOM, fff);
+					
+				}else{
+					obj.accumulate("status", "true");
+					obj.accumulate("msg", "Failed to create Class room");
+					return obj;
+				}
+			}
+			String url = DuoBeiUtil.getRoomLink(user.getId(), user.getNick(), roomid, DuobeiYunClient.ROLE_TEACHER);
+			obj.accumulate("status", "true");
+			obj.accumulate("clsUrl", url);
+		}catch(Throwable e){
+			obj.accumulate("status", "false");
+			obj.accumulate("msg", "System Unavailable.");
+		}
+		return obj;
+	}
+
+	public JSONObject studentStartClass(User user, String stm, String tid, String tnick) {
+		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");  
+		List<String> params = new ArrayList<String>();
+		params.add(tid);
+		params.add(stm);
+		// TODO Auto-generated method stub
+		JSONObject obj = new JSONObject();
+		String roomid=null;
+		String roomname=null;
+		try{
+			List<String> existingRoom = conMgr.queryForOneRow(SQLConstant.QUERY_CLASS_ROOM, params, 2);
+			//check existing room
+			if(existingRoom.size()>0){
+				roomid=existingRoom.get(0);
+			}else{
+				//create new room
+				String response = DuoBeiUtil.createRoom(tnick+"'s class", new Date(), 1);
+				logger.info("Create Class Response: "+response);
+				JSONObject cls = JSONObject.fromObject(response);
+				if(cls.getBoolean("success")){
+					
+					roomid = cls.getJSONObject("room").getString("roomId");
+					roomname =cls.getJSONObject("room").getString("title");
+					List<String> fff = new ArrayList<String>();
+					fff.add(tid);
+					fff.add(roomid);
+					fff.add(roomname);
+					fff.add(stm);
+					conMgr.executeUpdateSQL(SQLConstant.CREATE_CLASS_ROOM, fff);
+					
+				}else{
+					obj.accumulate("status", "true");
+					obj.accumulate("msg", "创建教室失败，请稍后再试");
+					return obj;
+				}
+			}
+			String url = DuoBeiUtil.getRoomLink(user.getId(), user.getNick(), roomid, DuobeiYunClient.ROLE_STUDENT);
+			obj.accumulate("status", "true");
+			obj.accumulate("clsUrl", url);
+		}catch(Throwable e){
+			obj.accumulate("status", "false");
+			obj.accumulate("msg", "System Unavailable.");
+		}
+		return obj;
 	}
 
 }

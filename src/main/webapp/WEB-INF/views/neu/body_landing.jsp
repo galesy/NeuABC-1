@@ -43,12 +43,15 @@ var editEvent=null;
 						//contentType : 'application/json',  
 						url : 'cls/studentStartClass',
 						data : {
-							startTime : $("#classStartTime").text()
+							startTime : $("#classStartTime").text(),
+							tid: $("#tch_id").text(),
+							tnick: $("#tch_nick").text()
 						},
 						dataType : 'json',
 						success : function(data) {
 							if (data.status == 'true') {
-								
+								window.open(data.clsUrl,'classroom');
+								$("#scheduleDetails").dialog( "close" );
 							}else{
 								$("#DetailError").text(data.msg);
 							}							
@@ -68,6 +71,7 @@ var editEvent=null;
 		    	  $("#class_type").text("");
 		    	  $("#class_name").text("");
 		    	  $("#DetailError").text("");
+		    	  $("#tch_id").text("");
 		    	  $('.ui-dialog-buttonset').find('button:contains("取消上课")').show();
 		    	  $('.ui-dialog-buttonset').find('button:contains("开始上课")').hide();
 		    	  editEvent=null;
@@ -262,6 +266,7 @@ var editEvent=null;
 							    	  $("#tch_nick").text(data.tnick);
 							    	  $("#class_type").text(data.typename);
 							    	  $("#class_name").text(data.pname);
+							    	  $("#tch_id").text(data.tid)
 								} else{
 									$("#DetailError").text(data.msg);
 								}	
@@ -455,7 +460,7 @@ var editEvent=null;
 
 <div id="scheduleDetails" class="popup" title="课堂详情">
    <p>时间：<span id="classStartTime"></span></p>
-   <p>教师：<span id="tch_nick"></span></p></p>
+   <p>教师：<span id="tch_nick"></span><span id="tch_id" style="display:none"></span></p></p>
    <p>课程：<span id="class_type"></span></p></p>
    <p>课题：<span id="class_name"></span></p>
    <p id="DetailError" style="color:red;padding-top:6px"></p>

@@ -441,4 +441,49 @@ public class TrainingClassController {
 		request.setAttribute("msg", obj.toString());
 		return "ajax";
 	}
+	
+	
+	//老师开始上课
+	@RequestMapping(value = "/teacherStartClass", method = RequestMethod.POST)
+	public String teacherStartClass(HttpServletRequest request, HttpServletResponse response) throws DataAccessException { 
+		User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
+		String uid=user.getId();
+		String stm = request.getParameter("startTime");
+		JSONObject obj = new JSONObject();
+		//没有传时间过来
+		if(stm==null||"".equals(stm)){
+			obj.accumulate("status", "false");
+			obj.accumulate("msg", "System Unavailable.");
+			request.setAttribute("msg", obj.toString());
+			return "ajax";
+		}
+		
+		obj = classmgr.teacherStartClass(user,stm);
+		
+		request.setAttribute("msg", obj.toString());
+		return "ajax";
+	}
+	
+	//学生上课
+		@RequestMapping(value = "/studentStartClass", method = RequestMethod.POST)
+		public String studentStartClass(HttpServletRequest request, HttpServletResponse response) throws DataAccessException { 
+			User user = (User) request.getSession().getAttribute(Constants.SESSION_USER);
+			String uid=user.getId();
+			String stm = request.getParameter("startTime");
+			String tid = request.getParameter("tid");
+			String tnick = request.getParameter("tnick");
+			JSONObject obj = new JSONObject();
+			//没有传时间过来
+			if(stm==null||"".equals(stm)){
+				obj.accumulate("status", "false");
+				obj.accumulate("msg", "无法获取上课时间，请刷新页面重试.");
+				request.setAttribute("msg", obj.toString());
+				return "ajax";
+			}
+			
+			obj = classmgr.studentStartClass(user,stm,tid,tnick);
+			
+			request.setAttribute("msg", obj.toString());
+			return "ajax";
+		}
 }

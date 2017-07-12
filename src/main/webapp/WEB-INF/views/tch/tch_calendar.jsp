@@ -47,7 +47,8 @@ var editEvent=null;
 							dataType : 'json',
 							success : function(data) {
 								if (data.status == 'true') {
-									
+									window.open(data.clsUrl,'classroom');
+									$("#classDetails").dialog( "close" );
 								}else{
 									$("#DetailError").text(data.msg);
 								}							

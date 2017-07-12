@@ -165,7 +165,7 @@ public class ABCAppController {
 
 	@RequestMapping(value = "/bookclass", method = RequestMethod.GET)
 	public String bookClass(HttpServletRequest request, HttpServletResponse response) {
-		return "abc.stu.bookclass";
+		return "abc.stu.landing";
 	}
 	
 	
