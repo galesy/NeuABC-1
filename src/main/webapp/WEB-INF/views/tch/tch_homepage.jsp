@@ -118,7 +118,7 @@
             <div class="signin_main_content">
                 <div class="sign_link">
                     <span>Already have an account? </span>
-                    <a href="<%=request.getContextPath()%>/signin">Sign In here.</a>
+                    <a href="<%=request.getContextPath()%>/signin">Log In here.</a>
                 </div>
                 <form class="pure-form pure-form-aligned" id="loginForm"
 					name="loginForm">
@@ -141,7 +141,7 @@
                             <span class="pure-form-message-inline" style="margin-top:-24px"></span>
                     </div>
                     <div class="pure-controls">
-                        <button type="submit" class="pure-button pure-button-primary sign_button" style="margin-top:0px">Sign Up</button>
+                        <button type="submit" class="pure-button pure-button-primary sign_button" style="margin-top:0px">Register</button>
                     </div>
                 </form>
             </div>

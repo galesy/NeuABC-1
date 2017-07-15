@@ -49,12 +49,12 @@
     <div class="home_main_content_banner_selbox pure-u-1">
     	<div class="home_main_content_banner_sel home_main_content_banner_sel_all pure-u-3-4 pure-u-xl-1-2">
             <a href="stu" class="home_main_content_banner_s pure-button pure-u-sm-2-5 pure-u-4-5"><i class="student"></i>我是学生</a>
-            <a href="tch" class="home_main_content_banner_t pure-button pure-u-sm-2-5 pure-u-4-5"><i class="teacher"></i>I'm a teacher</a>
+            <a href="signin" class="home_main_content_banner_t pure-button pure-u-sm-2-5 pure-u-4-5"><i class="teacher"></i>I'm a teacher</a>
         </div>
     </div>
 </div>
 <div class="footer pure-u-1">
-	<p class="copyright">Copyright © 2017 JSU Technology. All rights reserved. </p>
+	<p class="copyright">Copyright &copy; 2017 NP Technology. All rights reserved.  </p>
 </div>
 </body>
 </html>

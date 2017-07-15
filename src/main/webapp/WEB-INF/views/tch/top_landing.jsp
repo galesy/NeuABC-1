@@ -27,9 +27,9 @@ String iconPath = user.getPhoto()==null?"girl-1252997_960_720.jpg":user.getPhoto
 	<span class="home_t_nav_logo pure-u-1-4"><a href="/" class="home_t_nav_logo_img"></a></span>  
 	<ul class="person_top_nav_bar">
 		<li class="pure-menu-item"><img class="nav_user pure-img" src="<%=request.getContextPath()%>/static/neu/images/photo/<%= iconPath%>" /></li>
-    	<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/logout" class="pure-menu-link">Exit</a></li>
-    	<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/edituser" class="pure-menu-link">Personal</a></li>
-    	<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/prodintro" class="pure-menu-link sel">Calendar</a></li>
-    	<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/landing" class="pure-menu-link">Schedule</a></li>
+    	<li class="pure-menu-item"><a onclick="if(window.confirm('Do you want to Logout to homepage?')){document.location.href='<%=request.getContextPath()%>/logout'}" class="pure-menu-link">Exit</a></li>
+    	<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/edituser" class="pure-menu-link <% if("edituser".equals(request.getParameter("tab") ) ) {%>sel<%} %>">Personal</a></li>
+    	<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/prodintro" class="pure-menu-link <% if("calendar".equals(request.getParameter("tab") ) ) {%>sel<%} %>">Calendar</a></li>
+    	<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/landing" class="pure-menu-link <% if("landing".equals(request.getParameter("tab") ) ) {%>sel<%} %>">Schedule</a></li>
     </ul>
 </div>

@@ -106,13 +106,12 @@ var editEvent=null;
 											end: tempEvent._end,
 											color:"#4B824B"
 										};
-									$('#calendar').fullCalendar('renderEvent', eventData, true); 
+									$('#calendar').fullCalendar('renderEvent', eventData, false); 
 									$("#scheduleDialog").dialog( "close" );
 								} 
 							}else{
 								$("#SelectError").text(data.msg);
 							}							
-							$( "#scheduleDialog" ).dialog( "close" );
 						},
 						error : function(data) {
 							$("#SelectError").text("系统繁忙，请稍候再试");
@@ -178,7 +177,7 @@ var editEvent=null;
 							start: start,
 							end: end
 						};
-					$('#calendar').fullCalendar('renderEvent', eventData, true); 
+					$('#calendar').fullCalendar('renderEvent', eventData, false); 
 				}
 				$('#calendar').fullCalendar('unselect');
 			},
@@ -193,7 +192,7 @@ var editEvent=null;
 				if(tempEvent !=null){
 					$('#calendar').fullCalendar('removeEvents', tempEvent._id);
 				}
-				$('#calendar').fullCalendar('renderEvent', eventData, true); 
+				$('#calendar').fullCalendar('renderEvent', eventData, false); 
 				$.ajax({
 					type : 'POST',
 					//contentType : 'application/json',  
@@ -314,7 +313,7 @@ var editEvent=null;
 					  }
 					  $("#ptypeid").change();
 				});
-				if(count ==1){
+				if(count !=0){
 					$("#tid").change();
 				}
 			}else{
@@ -420,10 +419,10 @@ var editEvent=null;
     <div class="box_bg" >
     	<div class="s_calendar_box calendar_date">
         	<div class="title">温馨提示：</div>
-            <div class="schedule_tips">您下次上课时间是<span class="orange">2016-06-25 08：00</span>，请准时参与上课。</div>
+            <div class="schedule_tips">您下次上课时间是<span class="orange">2017-07-25 08：00</span>，请准时参与上课。</div>
             <p class="line"></p>
             <div class="schedule_tips"><span class="bold">L1级别定制套餐：</span>已上2课时，剩余5课时。</div>
-            <a href="#" class="schedule_button">请准时进入教室</a>
+            <a  class="schedule_button">请准时进入教室</a>
         </div>
     </div>
     <div class="box_bg" >

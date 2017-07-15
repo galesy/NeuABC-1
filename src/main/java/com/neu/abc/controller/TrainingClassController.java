@@ -324,8 +324,13 @@ public class TrainingClassController {
 			request.setAttribute("msg", obj.toString());
 			return "ajax";
 		}	
-		//ToDo:校验是否该时段该老师是否可以预订,因为可能在同一时间其他人也订了该老师.
-		
+
+		if(classmgr.confirmStudentTime(tid, stm)){
+			obj.accumulate("status", "false");
+			obj.accumulate("msg", "当前老师已经排满课程,请选择其他老师");
+			request.setAttribute("msg", obj.toString());
+			return "ajax";
+		}
 		boolean results = classmgr.saveStudentTime(uid, stm, tid, pid);
 					
 		if(!results){
@@ -437,6 +442,7 @@ public class TrainingClassController {
 		}
 		
 		classmgr.cancelTeacherClass(uid, stm);
+		classmgr.deleteTeacherTime(uid, stm);
 		obj.accumulate("status", "true");
 		request.setAttribute("msg", obj.toString());
 		return "ajax";

@@ -6,6 +6,7 @@
 var tempEvent=null;
 var editEvent=null;
 	$(document).ready(function() {		
+		$("#stuimg").hover(function(){$("#studentDetailInfo").show();}, function(){$("#studentDetailInfo").hide()});
 			$("#classDetails").dialog({
 				height: 250,
 			      width: 350,
@@ -300,6 +301,7 @@ var editEvent=null;
 				$(cell).css('width','80px');
 			}
 		});
+		
 	});
 
 </script>
@@ -369,15 +371,15 @@ var editEvent=null;
         <div class="calendar_main_box">
             <div class="calendar_title">Tips:</div>
             <p class="line"></p>
-            <p class="calendar_tips_class"><span class="bold">Your curriculum:</span><span class="orange">the next time is 2016-06-25 08:00,</span>Please enter the classroom on time.</p>
-            <p class="calendar_tips_class"><span class="bold">The last class time: </span>2016-06-10 07:00</p>
+            <p class="calendar_tips_class"><span class="bold">Your curriculum:</span><span class="orange">the next time is 2017-07-25 08:00,</span>Please enter the classroom on time.</p>
+            <p class="calendar_tips_class"><span class="bold">The last class time: </span>2017-07-14 07:00</p>
             <p class="calendar_tips_class"><span class="bold">The last Class: </span>Family Matters / L1.Vernon's Questions</p>
             <p class="calendar_tips_class"><span class="bold">Students: </span></p>
             <div class="calendar_tips_student">
                 <div class="calendar_tips_img">
-                    <img src="<%=request.getContextPath()%>/static/neu/images/img1.png" />
+                    <img id="stuimg" src="<%=request.getContextPath()%>/static/neu/images/img1.png"  />
                     <p class="img_name">Abby</p>
-                    <div class="class_details calendar_class_details">
+                    <div id="studentDetailInfo" style="display:none" class="class_details calendar_class_details">
                         <div class="title">Personal data</div>
                         <div class="line"></div>
                         <div class="con">
@@ -388,7 +390,7 @@ var editEvent=null;
                     </div>
                 </div>
             </div>
-            <a href="#" class="schedule_button">Enter the classroom</a>
+            <a  class="schedule_button">Enter the classroom</a>
         </div>
     </div>
      <div class="calendar_bg" >

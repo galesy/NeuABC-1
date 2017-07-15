@@ -77,6 +77,7 @@ public class UserMgr {
 		paramList.add(uname);
 		paramList.add(PwdUtil.encryptPwd(pwd));
 		paramList.add(email);
+		paramList.add(uname);
 		return conMgr.executeUpdateSQL(SQLConstant.CREAT_USER_T, paramList);
 	}
 	public boolean createStudent(String phone, String pwd, String email) throws DataAccessException {
@@ -85,6 +86,7 @@ public class UserMgr {
 		paramList.add(PwdUtil.encryptPwd(pwd));
 		paramList.add(phone);
 		paramList.add(email);
+		paramList.add(phone);
 		return conMgr.executeUpdateSQL(SQLConstant.CREAT_USER_S, paramList);
 	}
 	

@@ -21,7 +21,7 @@
 						//location.href = "landing";
 						$("#myModal").css("top",$(".ui-layout-center").scrollTop()+20);
 						$("#myModal").reveal({'data-animation':'none','callBack':function(){
-							location.href = "landing";
+							location.href = "prodintro";
 						}});
 					} else {
 						$("#top-error").show();
@@ -122,10 +122,10 @@
 			},
 			dataType : 'json',
 			success : function(data) {
-				location.href = "landing";
+				location.href = "prodintro";
 			},
 			error : function(data) {
-				location.href = "landing";
+				location.href = "prodintro";
 			}
 		});
 	}

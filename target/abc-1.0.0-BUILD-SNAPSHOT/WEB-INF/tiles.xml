@@ -83,11 +83,11 @@
 	</definition>
 	<definition name="abc.tch.landing" extends="base.homepage">
 		<put-attribute name="body" value="/WEB-INF/views/tch/tch_calendar.jsp" />
-		<put-attribute name="top" value="/WEB-INF/views/tch/top_landing.jsp" />
+		<put-attribute name="top" value="/WEB-INF/views/tch/top_landing.jsp?tab=landing" />
 	</definition>
 	<definition name="abc.tch.calendar1" extends="base.homepage">
 		<put-attribute name="body" value="/WEB-INF/views/tch/tch_calendar1.jsp" />
-		<put-attribute name="top" value="/WEB-INF/views/tch/top_landing.jsp" />
+		<put-attribute name="top" value="/WEB-INF/views/tch/top_landing.jsp?tab=calendar" />
 	</definition>
 	<definition name="abc.tch.useredit" extends="base.homepage">
 		<put-attribute name="body" value="/WEB-INF/views/tch/tch_useredit.jsp" />
