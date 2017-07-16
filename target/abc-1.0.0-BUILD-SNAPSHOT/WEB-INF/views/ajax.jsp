@@ -1,1 +1,0 @@
-<%@ page language="java" contentType="text/html; charset=GBK" pageEncoding="ISO-8859-1"%><%=request.getAttribute("msg")%>

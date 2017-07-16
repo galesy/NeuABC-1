@@ -108,7 +108,7 @@ $(document).ready(function() {
                     </div>
                 </div>
                 <div class="pure-controls">
-                    <p class="calendar_button pure-u-1" ><a  class="pure-u-1-4">Submit</a></p>
+                    <p class="calendar_button pure-u-1" ><a  class="pure-u-1-4" href="landing">Submit</a></p>
                 </div>
             </div>
         </div>
