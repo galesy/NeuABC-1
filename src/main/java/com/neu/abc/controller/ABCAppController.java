@@ -131,7 +131,7 @@ public class ABCAppController {
 			String gen = request.getParameter("gen");
 			logger.info(request.getCharacterEncoding());
 			String photoPath = request.getSession().getServletContext().getRealPath("/")
-					+ "static\\neu\\images\\photo\\";
+					+ "static"+File.separator+"neu"+File.separator+"images"+File.separator+"photo"+File.separator+"";
 			CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
 					request.getSession().getServletContext());
 			if (multipartResolver.isMultipart(request)) {
@@ -140,8 +140,8 @@ public class ABCAppController {
 				while (iter.hasNext()) {
 					MultipartFile file = multiRequest.getFile(iter.next().toString());
 					if (file != null && !"".equals(file.getOriginalFilename())) {
-						photo = file.getOriginalFilename();
-						String path = photoPath + file.getOriginalFilename();
+						photo = user.getId()+file.getOriginalFilename();
+						String path = photoPath + photo;
 						logger.info("upload photo to:" + path);
 						file.transferTo(new File(path));
 					}
